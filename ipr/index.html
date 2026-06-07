@@ -35,6 +35,17 @@ h1{font-size:26px;margin:0 0 4px}
 .ret-res{width:100%}
 .journal-link{margin-top:14px;text-align:center}
 .journal-link a{color:var(--green2);text-decoration:none;font-size:13px}
+@media (max-width:560px){
+  .wrap{padding:18px 14px 70px}
+  .row{flex-direction:column;gap:0}
+  .cat{flex-direction:column;gap:8px}
+  .nav{flex-wrap:wrap;gap:10px}
+  .nav>div{width:100%;display:flex;gap:10px}
+  .nav>div .btn{flex:1}
+  .grades{flex-wrap:wrap}
+  h1{font-size:22px}
+  .logo-img{height:24px}
+}
 .brand b{font-size:15px;letter-spacing:.3px}
 .steps{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
 .steps .st{flex:1;min-width:90px;height:5px;border-radius:3px;background:var(--line)}
@@ -2778,7 +2789,7 @@ function scr0(){return `
   </div>
   <div class="row">
     <div class="field"><label class="lbl">Компания</label><input id="f_company" type="text" value="${esc(state.person.company)}" placeholder="Название компании"></div>
-    <div class="field"><label class="lbl">Годовой оборот, ₽ <span class="small" style="color:var(--e)">* обязательно</span></label><input id="f_turn" type="text" value="${esc(state.person.turnover)}" placeholder="напр. 50 000 000"></div>
+    <div class="field"><label class="lbl">Годовой оборот, ₽ <span class="small" style="color:var(--e)">*</span></label><input id="f_turn" type="text" value="${esc(state.person.turnover)}" placeholder="напр. 50 000 000"></div>
   </div>
   <div class="field">
     <label class="lbl">О компании <span class="small muted">(ниша, продукт, бизнес-модель — чем подробнее, тем точнее план. Можно вставить текст из презентации компании)</span></label>
@@ -2952,7 +2963,9 @@ function buildPrompt(){
     return `### ${s.skill} (категория: ${s.category||'—'})\n- Текущий уровень — ${gd[g.current]||'?'}: ${s[g.current]||''}\n- Целевой уровень за квартал — ${gd[g.target]||'?'}: ${s[g.target]||''}`;
   }).join("\n\n");
   const programLines=(PROGRAM||[]).map(m=>`М${m.n}. ${m.t} — ${m.topics}`).join("\n");
-  return `Ты — старший карьерный архитектор A-Players. Составь персональный план развития (ИПР) на 1 квартал (13 недель) строго по методологии ниже.
+  return `⚠️ ПРОЧИТАЙ ПЕРВЫМ: верни РОВНО ОДИН JSON-объект по схеме в конце — как обычный текст прямо в этом ответе. НЕ создавай артефакт, дашборд, приложение или визуализацию. НЕ пиши код. НЕ вызывай инструменты и API. НЕ добавляй вступление, пояснения и markdown-разметку. Твой ответ должен начинаться с символа { и заканчиваться символом } — и ничего кроме этого.
+
+Ты — старший карьерный архитектор A-Players. Составь персональный план развития (ИПР) на 1 квартал (13 недель) строго по методологии ниже.
 
 ЧЕЛОВЕК: ${state.person.name||'—'}, компания: ${state.person.company||'—'}, категория: ${DIAGNOSTIC.categories[state.category].label}.
 О КОМПАНИИ (ниша, продукт, модель): ${state.person.about||'(не указано)'}
@@ -3006,7 +3019,9 @@ ${programLines}
  ],
  "checkpoints":["..."]
 }
-Все тексты — на русском. По 2–3 задачи на компетенцию (хотя бы 1 practice + 1 theory, не больше 3 — не перегружай план). program_modules — только релевантные модули из списка выше (номер n + точное название title).`;
+Все тексты — на русском. По 2–3 задачи на компетенцию (хотя бы 1 practice + 1 theory, не больше 3 — не перегружай план). program_modules — только релевантные модули из списка выше (номер n + точное название title).
+
+❗ФИНАЛЬНОЕ НАПОМИНАНИЕ: ответ = ТОЛЬКО этот JSON-объект как текст. Без артефактов, без кода, без вступлений. Первый символ ответа — {, последний — }.`;
 }
 
 async function generate(){
