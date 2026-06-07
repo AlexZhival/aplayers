@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Система мотивации · Менеджер по продажам · A-Players</title>
+<style>
+  :root{
+    --navy:#1f3864; --blue:#2e5496; --accent:#e8a33d; --green:#2e7d4f;
+    --red:#c0392b; --bg:#f4f6fa; --card:#ffffff; --line:#e2e7f0; --ink:#1a2433; --muted:#6b7689;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;
+    padding:54px 40px;border-radius:0 0 26px 26px;margin-bottom:34px;box-shadow:0 10px 30px rgba(31,56,100,.18)}
+  .hero .logo{height:46px;width:auto;margin-bottom:22px;display:block;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+  .hero .kicker{font-size:13px;letter-spacing:3px;text-transform:uppercase;opacity:.8;font-weight:600}
+  .hero h1{font-size:34px;margin:10px 0 8px;font-weight:800;line-height:1.15}
+  .hero p{font-size:17px;opacity:.92;max-width:640px}
+  .hero .tag{display:inline-block;margin-top:18px;background:rgba(255,255,255,.16);
+    padding:8px 16px;border-radius:30px;font-size:14px;font-weight:600}
+
+  /* SECTIONS */
+  section{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:30px 32px;margin-bottom:24px;box-shadow:0 2px 10px rgba(31,56,100,.05)}
+  .sec-num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+    background:var(--navy);color:#fff;border-radius:10px;font-weight:800;font-size:16px;margin-right:12px}
+  h2{font-size:23px;font-weight:800;color:var(--navy);display:flex;align-items:center;margin-bottom:6px}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 20px 46px}
+  h3{font-size:17px;font-weight:700;color:var(--blue);margin:22px 0 10px}
+
+  /* FORMULA */
+  .formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#f0f4fb;
+    border:1px dashed var(--blue);border-radius:14px;padding:18px 22px;margin:6px 0 8px;font-size:16px}
+  .formula .b{background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 14px;font-weight:700;color:var(--navy)}
+  .formula .op{font-size:20px;font-weight:800;color:var(--blue)}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:15px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:11px 14px;font-weight:600}
+  th:first-child{border-radius:10px 0 0 0} th:last-child{border-radius:0 10px 0 0}
+  td{padding:11px 14px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:#f7f9fc}
+  .num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+
+  /* SCALE (коэффициент) */
+  .scale{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+  .step{border-radius:14px;padding:16px 14px;text-align:center;color:#fff;position:relative}
+  .step small{display:block;font-size:12.5px;opacity:.9;font-weight:600;letter-spacing:.5px}
+  .step b{display:block;font-size:30px;font-weight:800;margin:4px 0}
+  .step span{font-size:12.5px;opacity:.92}
+  .s1{background:#b04a3a} .s2{background:#6b7689} .s3{background:#3f7cc0} .s4{background:#2e7d4f}
+
+  /* CARDS (сценарии) */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+  .card{border-radius:16px;padding:22px 20px;border:1px solid var(--line);text-align:center;background:#fff}
+  .card.real{border:2px solid var(--accent);box-shadow:0 6px 20px rgba(232,163,61,.18);transform:scale(1.03)}
+  .card .lbl{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--muted)}
+  .card.real .lbl{color:var(--accent)}
+  .card .big{font-size:30px;font-weight:800;color:var(--navy);margin:8px 0 2px}
+  .card .small{font-size:13px;color:var(--muted)}
+  .badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;
+    padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.5px}
+
+  .pill{display:inline-block;background:#eef2f9;color:var(--navy);border-radius:8px;
+    padding:3px 10px;font-weight:700;font-size:14px}
+  .note{background:#fff8ec;border-left:4px solid var(--accent);border-radius:8px;
+    padding:13px 16px;margin-top:16px;font-size:14.5px;color:#5a4a2a}
+  .ways{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px}
+  .way{display:flex;gap:14px;align-items:flex-start;background:#f7f9fc;border:1px solid var(--line);
+    border-radius:13px;padding:16px 18px}
+  .way .ic{flex:0 0 40px;height:40px;background:var(--navy);color:#fff;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+  .way h4{font-size:16px;color:var(--navy);margin-bottom:3px}
+  .way p{font-size:14.5px;color:var(--muted)}
+  .way .amt{margin-left:auto;font-weight:800;color:var(--green);white-space:nowrap;font-size:15px}
+  .linkbtn{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;
+    text-decoration:none;padding:8px 16px;border-radius:9px;font-weight:600;font-size:14px;margin-top:8px}
+  .linkbtn:hover{background:var(--blue)}
+  .linkbtn.soon{background:#eef2f9;color:var(--muted);border:1px dashed #b9c4d6}
+  .reqfmt{list-style:none;margin:6px 0 0;padding:0}
+  .reqfmt li{padding:7px 0 7px 28px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line)}
+  .reqfmt li:last-child{border-bottom:none}
+  .reqfmt li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800}
+
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:30px}
+
+  /* CALCULATOR */
+  .calc-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:24px;margin-top:12px}
+  .calc-inputs{display:flex;flex-direction:column;gap:17px}
+  .field label{display:block;font-weight:700;font-size:14.5px;margin-bottom:8px;color:var(--navy)}
+  .field .row{display:flex;align-items:center;gap:12px}
+  .calc-inputs input[type=range]{flex:1;accent-color:var(--blue);height:6px}
+  .calc-inputs input[type=number],.calc-inputs select{font:inherit;padding:9px 12px;border:1px solid var(--line);
+    border-radius:9px;width:100%;font-weight:700;color:var(--navy);background:#fff}
+  .valbox{min-width:70px;text-align:center;background:#eef2f9;border-radius:8px;padding:7px 8px;
+    font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+  .coefbadge{display:inline-block;background:var(--green);color:#fff;font-weight:800;font-size:13px;
+    padding:4px 11px;border-radius:20px;white-space:nowrap}
+  .calc-result{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:16px;
+    padding:26px 24px;display:flex;flex-direction:column;align-self:start;position:sticky;top:16px}
+  .calc-result .total-lbl{font-size:12.5px;letter-spacing:1.8px;text-transform:uppercase;opacity:.8;font-weight:700}
+  .calc-result .total{font-size:42px;font-weight:800;margin:4px 0 18px;line-height:1}
+  .brk{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.16);font-size:14.5px}
+  .brk:last-child{border-bottom:none}
+  .brk .v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .brk .v.neg{color:#ffb3a8}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:5px}
+  @media(max-width:680px){.calc-grid{grid-template-columns:1fr}.calc-result{position:static}}
+
+  @media print{
+    body{background:#fff} .hero{box-shadow:none;border-radius:0}
+    section{box-shadow:none;break-inside:avoid;page-break-inside:avoid}
+    .card.real{transform:none}
+  }
+  @media(max-width:680px){
+    .scale,.cards{grid-template-columns:1fr} .hero{padding:40px 24px}
+    .hero h1{font-size:27px} section{padding:24px 20px}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img class="logo" src="logo-aplayers.png" alt="A-PLAYERS">
+  <div class="kicker">Sales Department</div>
+  <h1>Система мотивации<br>менеджера по продажам</h1>
+  <p>Прозрачная схема дохода: из чего складывается, как на него влиять и сколько можно зарабатывать. По этому документу проходим на онбординге.</p>
+  <div class="tag">Карьерные консультации → Академия · VIP-группы · Разборы</div>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. ИЗ ЧЕГО СКЛАДЫВАЕТСЯ -->
+  <section>
+    <h2><span class="sec-num">1</span>Из чего складывается твой доход</h2>
+    <p class="sub">Три блока. Базовый — стабильный оклад. Остальное зависит от результата.</p>
+    <div class="formula">
+      <span class="b">Оклад 50 000 ₽</span>
+      <span class="op">+</span>
+      <span class="b">% с личных продаж × коэффициент</span>
+      <span class="op">+</span>
+      <span class="b">Дисциплина CRM</span>
+    </div>
+    <div class="note">💡 В особые периоды (завал лидов с выступлений Александра и личные VIP-продажи) добавляются отдельные бонусы — разделы 4 и 5.</div>
+  </section>
+
+  <!-- 2. ОСНОВНОЙ ЗАРАБОТОК -->
+  <section>
+    <h2><span class="sec-num">2</span>Основной заработок — % с продаж</h2>
+    <p class="sub">Твоя главная работа: проводить карьерные консультации по партнёрским лидам и закрывать их на Академию.</p>
+
+    <div class="formula">
+      <span class="b">Бонус</span><span class="op">=</span>
+      <span class="b">Cash-in твоих продаж</span><span class="op">×</span>
+      <span class="b">4,7%</span><span class="op">×</span>
+      <span class="b">Коэффициент Show Rate</span>
+    </div>
+
+    <h3>Повышающий коэффициент за «дожим» (Show Rate)</h3>
+    <p style="font-size:14.5px;color:var(--muted);margin-bottom:6px">Show Rate — доля записанных на КК, которые реально дошли. Часть лидов с первого раза не выходит — их нужно дожимать. Чем лучше дожимаешь, тем выше коэффициент к бонусу.</p>
+    <div class="scale">
+      <div class="step s1"><small>SHOW RATE &lt; 45%</small><b>×0,8</b><span>теряешь лидов</span></div>
+      <div class="step s2"><small>45–55%</small><b>×1,0</b><span>норма</span></div>
+      <div class="step s3"><small>55–65%</small><b>×1,1</b><span>хорошо</span></div>
+      <div class="step s4"><small>≥ 65%</small><b>×1,2</b><span>отлично</span></div>
+    </div>
+    <div class="note">📌 Почему это важно: примерно <b>половина всей выручки</b> приходит с лидов, которые вышли на КК не с первого, а со 2–4 раза. Коэффициент напрямую вознаграждает эту работу.</div>
+  </section>
+
+  <!-- 3. CRM -->
+  <section>
+    <h2><span class="sec-num">3</span>Дисциплина CRM</h2>
+    <p class="sub">Чистота в AmoCRM = деньги. Проверяем по чек-листу ОКК раз в месяц.</p>
+    <table>
+      <thead><tr><th>Ошибок по чек-листу за месяц</th><th>Бонус / штраф</th></tr></thead>
+      <tbody>
+        <tr><td>0 ошибок — всё идеально</td><td class="num pos">+10 000 ₽</td></tr>
+        <tr><td>1–2 ошибки</td><td class="num pos">+7 000 ₽</td></tr>
+        <tr><td>3–5 ошибок</td><td class="num">0 ₽</td></tr>
+        <tr><td>6–8 ошибок</td><td class="num neg">−5 000 ₽</td></tr>
+        <tr><td>больше 8 ошибок</td><td class="num neg">−10 000 ₽</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. ЗАВАЛ -->
+  <section>
+    <h2><span class="sec-num">4</span>Период завала лидов</h2>
+    <p class="sub">Когда с выступления Александра приходит до ~300 заявок — ты на 2–3 недели переключаешься на их разбор. Оклад сохраняется, партнёрский % на это время заморожен, но включаются 3 источника дохода.</p>
+    <div class="ways">
+      <div class="way"><div class="ic">1</div>
+        <div><h4>Вывод на разбор к Александру</h4><p>Квалифицируешь заявку и назначаешь встречу-разбор. За каждый состоявшийся разбор (человек пришёл, был ≥ 20 мин).</p></div>
+        <div class="amt">1 000 ₽<br><small style="color:var(--muted);font-weight:600">500 ₽ при Show&lt;50%</small></div>
+      </div>
+      <div class="way"><div class="ic">2</div>
+        <div><h4>Хвост % с оплат</h4><p>Если Александр закрыл человека, которого вывел ты — тебе капает процент с оплаты. Регрессивно: 1% до 2,2 млн чека, 0,5% свыше. Считается ещё 60 дней.</p></div>
+        <div class="amt">1% / 0,5%</div>
+      </div>
+      <div class="way"><div class="ic">3</div>
+        <div><h4>Личные VIP-продажи</h4><p>Небольшие компании (&lt; 100 млн) ты закрываешь сам на VIP-группу — см. раздел 5.</p></div>
+        <div class="amt">5%</div>
+      </div>
+    </div>
+    <div class="note">⚖️ Благодаря хвосту % месяц с выступлением приносит примерно столько же, сколько обычный — переключение на завал не снижает твой доход.</div>
+  </section>
+
+  <!-- 5. VIP -->
+  <section>
+    <h2><span class="sec-num">5</span>Личные продажи VIP-группы</h2>
+    <p class="sub">Чек 450 000 ₽ за 2 человек + 50 000 ₽ за каждого дополнительного сотрудника. Ставка выше, если закрыл сам; ниже — если лид с рефералки (делимся % с блогером).</p>
+    <table>
+      <thead><tr><th>Канал лида</th><th>Вывел на разбор (продал Александр)</th><th>Закрыл сам</th></tr></thead>
+      <tbody>
+        <tr><td>Личный / партнёрский</td><td class="num">2,5%</td><td class="num pos">5%</td></tr>
+        <tr><td>Рефералка (блогеры с %)</td><td class="num">1,5%</td><td class="num">3%</td></tr>
+      </tbody>
+    </table>
+    <h3>Сколько это в деньгах (если закрыл сам, личный канал — 5%)</h3>
+    <table>
+      <thead><tr><th>Сотрудников в практике</th><th>Чек сделки</th><th>Твой бонус</th></tr></thead>
+      <tbody>
+        <tr><td>2 человека</td><td class="num">450 000 ₽</td><td class="num pos">22 500 ₽</td></tr>
+        <tr><td>3 человека</td><td class="num">500 000 ₽</td><td class="num pos">25 000 ₽</td></tr>
+        <tr><td>4 человека</td><td class="num">550 000 ₽</td><td class="num pos">27 500 ₽</td></tr>
+        <tr><td>5 человек</td><td class="num">600 000 ₽</td><td class="num pos">30 000 ₽</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. ПРОГНОЗ -->
+  <section>
+    <h2><span class="sec-num">6</span>Сколько можно зарабатывать</h2>
+    <p class="sub">Прогноз совокупного дохода в месяц по трём сценариям выполнения плана.</p>
+
+    <h3>Обычный месяц (воронка карьерных консультаций)</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Пессим.</div><div class="big">120 000 ₽</div><div class="small">8 продаж · Show 45%</div></div>
+      <div class="card real"><div class="badge">ВЫПОЛНЕН ПЛАН</div><div class="lbl">Реалист.</div><div class="big">251 000 ₽</div><div class="small">15 продаж · Show 58%</div></div>
+      <div class="card"><div class="lbl">Оптим.</div><div class="big">342 000 ₽</div><div class="small">20 продаж · Show 66%</div></div>
+    </div>
+
+    <h3 style="margin-top:24px">Месяц с выступлением (разборы + хвост % + VIP)</h3>
+    <div class="cards">
+      <div class="card"><div class="lbl">Пессим.</div><div class="big">112 500 ₽</div><div class="small">40 разборов</div></div>
+      <div class="card real"><div class="lbl">Реалист.</div><div class="big">220 000 ₽</div><div class="small">60 разборов + VIP</div></div>
+      <div class="card"><div class="lbl">Оптим.</div><div class="big">323 500 ₽</div><div class="small">80 разборов + VIP</div></div>
+    </div>
+
+    <div class="note" style="margin-top:22px">🎯 При стабильном выполнении плана — <b>около 250 000 ₽ в месяц</b>. Это уровень сильного менеджера по продажам на рынке. Потолок не ограничен: больше продаж и выше Show Rate → выше доход.</div>
+  </section>
+
+  <!-- 7. КАЛЬКУЛЯТОР -->
+  <section>
+    <h2><span class="sec-num">7</span>Калькулятор твоего дохода</h2>
+    <p class="sub">Подставь свои показатели — прогноз дохода за месяц посчитается сразу.</p>
+    <div class="calc-grid">
+      <div class="calc-inputs">
+
+        <div class="field">
+          <label>Средний чек, ₽</label>
+          <div class="row"><input type="number" id="c_chek" value="250000" step="10000" min="0"></div>
+        </div>
+
+        <div class="field">
+          <label>Продаж в Академию за месяц</label>
+          <div class="row">
+            <input type="range" id="c_sales" min="0" max="30" value="15">
+            <span class="valbox" id="v_sales">15</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Show Rate — выход на КК</label>
+          <div class="row">
+            <input type="range" id="c_sr" min="30" max="80" value="58">
+            <span class="valbox" id="v_sr">58%</span>
+            <span class="coefbadge" id="v_coef">×1,1</span>
+          </div>
+          <div class="hint">Чем выше Show Rate, тем выше коэффициент к бонусу (×0,8 … ×1,2)</div>
+        </div>
+
+        <div class="field">
+          <label>Дисциплина CRM (ошибок по чек-листу за месяц)</label>
+          <div class="row">
+            <select id="c_crm">
+              <option value="10000">0 ошибок → +10 000 ₽</option>
+              <option value="7000" selected>1–2 ошибки → +7 000 ₽</option>
+              <option value="0">3–5 ошибок → 0 ₽</option>
+              <option value="-5000">6–8 ошибок → −5 000 ₽</option>
+              <option value="-10000">больше 8 → −10 000 ₽</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>VIP-сделок закрыл сам (опционально)</label>
+          <div class="row"><input type="number" id="c_vip" value="0" min="0" max="20"></div>
+          <div class="hint">Личный канал, чек 450к → 22 500 ₽ за сделку</div>
+        </div>
+
+        <div class="field">
+          <label>Разборов вывел на Александра — период завала (опционально)</label>
+          <div class="row"><input type="number" id="c_razb" value="0" min="0" max="200"></div>
+          <div class="hint">1 000 ₽ за состоявшийся разбор (при Show ≥ 50%)</div>
+        </div>
+
+      </div>
+
+      <div class="calc-result">
+        <div class="total-lbl">Прогноз дохода за месяц</div>
+        <div class="total" id="r_total">— ₽</div>
+        <div class="brk"><span>Оклад</span><span class="v" id="r_oklad">50 000 ₽</span></div>
+        <div class="brk"><span>Бонус с продаж <span id="r_coefnote" style="opacity:.7"></span></span><span class="v" id="r_bonus">—</span></div>
+        <div class="brk"><span>VIP-продажи</span><span class="v" id="r_vip">—</span></div>
+        <div class="brk"><span>Разборы (завал)</span><span class="v" id="r_razb">—</span></div>
+        <div class="brk"><span>Дисциплина CRM</span><span class="v" id="r_crm">—</span></div>
+        <div class="brk" style="margin-top:8px;border-top:2px solid rgba(255,255,255,.28);border-bottom:none;padding-top:14px">
+          <span>📈 Выручка компании от тебя</span><span class="v" id="r_rev">—</span></div>
+        <div class="hint" style="color:rgba(255,255,255,.72);margin-top:6px">Твой доход = <b id="r_take" style="color:#fff">—</b> от выручки, которую ты приносишь</div>
+      </div>
+    </div>
+    <div class="note">⚙️ Это упрощённый калькулятор для наглядности. Точный расчёт по факту месяца ведётся в предиктивной модели (раздел 8).</div>
+  </section>
+
+  <!-- 8. ЧТО ОТ ТЕБЯ ЖДЁМ -->
+  <section>
+    <h2><span class="sec-num">8</span>Что от тебя ждём</h2>
+    <p class="sub">Прозрачная схема дохода работает в обе стороны. Вот обязательная дисциплина, без которой бонусы не считаются.</p>
+
+    <div class="ways">
+      <div class="way"><div class="ic">📋</div>
+        <div>
+          <h4>Ежедневный отчёт — обязательно</h4>
+          <p>Каждое утро присылаешь отчёт за предыдущий день в согласованное время. Это не формальность — по нему мы видим динамику и помогаем не упустить лиды.</p>
+        </div>
+      </div>
+
+      <div class="way"><div class="ic">🧾</div>
+        <div>
+          <h4>Формат отчёта</h4>
+          <p>Единый шаблон, заполняешь по фактам за день:</p>
+          <ul class="reqfmt">
+            <li>Проведено карьерных консультаций (КК)</li>
+            <li>Назначено новых КК / сделано дожимов по неявкам</li>
+            <li>Show Rate за день (вышло / назначено)</li>
+            <li>Оплаты и cash-in</li>
+            <li>План / факт по продажам на месяц</li>
+            <li>Блокеры и где нужна помощь</li>
+          </ul>
+          <p style="font-size:13px;margin-top:6px">↳ финальный шаблон полей согласуем на онбординге</p>
+        </div>
+      </div>
+
+      <div class="way"><div class="ic">📊</div>
+        <div>
+          <h4>Заполнение предиктивной модели</h4>
+          <p>Все показатели вносишь в предиктивную модель — она прогнозирует выручку и твой бонус. Заполняется регулярно, держим в актуальном состоянии.</p>
+          <a class="linkbtn soon" href="#">🔗 Ссылка на предиктивную модель — добавим</a>
+        </div>
+      </div>
+
+      <div class="way"><div class="ic">⚙️</div>
+        <div>
+          <h4>Регламент работы в CRM</h4>
+          <p>Отдельный документ с правилами ведения AmoCRM (статусы сделок, поля, задачи, сроки). Сформируем его вместе на онбординге. Соблюдение регламента напрямую влияет на бонус «Дисциплина CRM» (раздел&nbsp;3).</p>
+          <a class="linkbtn soon" href="#">🔗 Регламент по CRM — сформируем вместе</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">🤝 Эти правила — основа доверия и прозрачности. Выполняешь дисциплину → весь доход из разделов 2–5 работает на тебя в полном объёме.</div>
+  </section>
+
+  <footer>
+    A-Players Group · Система мотивации менеджера по продажам · черновик для онбординга<br>
+    Параметры (базовый %, ставки) финализируются после обкатки на 1–2 месяцах.
+  </footer>
+
+</div>
+
+<script>
+  var $ = function(id){return document.getElementById(id);};
+  function fmt(n){return new Intl.NumberFormat('ru-RU').format(Math.round(n)) + ' ₽';}
+  function signed(n){return (n>0?'+':'') + fmt(n);}
+  function coef(sr){ if(sr<45) return 0.8; if(sr<55) return 1.0; if(sr<65) return 1.1; return 1.2; }
+
+  var ids = ['c_chek','c_sales','c_sr','c_crm','c_vip','c_razb'];
+
+  function recalc(){
+    var chek  = +$('c_chek').value || 0;
+    var sales = +$('c_sales').value || 0;
+    var sr    = +$('c_sr').value || 0;
+    var crm   = +$('c_crm').value || 0;
+    var vip   = +$('c_vip').value || 0;
+    var razb  = +$('c_razb').value || 0;
+
+    var k = coef(sr);
+    var oklad = 50000;
+    var bonus = sales * chek * 0.047 * k;
+    var vipB  = vip * 22500;
+    var razbB = razb * 1000;
+    var total = oklad + bonus + vipB + razbB + crm;
+
+    var revenue = sales * chek + vip * 450000;   // Academy cash-in + VIP-сделки (450к)
+    var take = revenue > 0 ? (total / revenue) : 0;
+
+    $('v_sales').textContent = sales;
+    $('v_sr').textContent = sr + '%';
+    $('v_coef').textContent = '×' + k.toFixed(1).replace('.', ',');
+
+    $('r_oklad').textContent = fmt(oklad);
+    $('r_bonus').textContent = fmt(bonus);
+    $('r_coefnote').textContent = '(' + sales + ' × 4,7% × ' + k.toFixed(1).replace('.', ',') + ')';
+    $('r_vip').textContent = fmt(vipB);
+    $('r_razb').textContent = fmt(razbB);
+    var crmEl = $('r_crm');
+    crmEl.textContent = signed(crm);
+    crmEl.className = 'v' + (crm < 0 ? ' neg' : '');
+    $('r_total').textContent = fmt(total);
+    $('r_rev').textContent = fmt(revenue);
+    $('r_take').textContent = (take * 100).toFixed(1).replace('.', ',') + '%';
+  }
+
+  ids.forEach(function(id){
+    $(id).addEventListener('input', recalc);
+    $(id).addEventListener('change', recalc);
+  });
+  recalc();
+</script>
+</body>
+</html>
