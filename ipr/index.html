@@ -2931,11 +2931,12 @@ function recommendSkills(){
   const KW=["страт","план","приорит","результат","цел","команд","мотив","анализ","реш","данн","контрол","делег","финанс","эконом","комм","переговор","продаж","найм","процесс","клиент"];
   const scored=state.role.skills.map((s,i)=>{
     const n=(s.skill||"").toLowerCase();
-    let sc=0;
-    weak.forEach(w=>KW.forEach(k=>{ if(w.includes(k)&&n.includes(k)) sc+=2; }));   // совпало со слабой зоной
-    KW.slice(0,8).forEach(k=>{ if(n.includes(k)) sc+=1; });                        // управленческое ключевое слово
-    return {i,sc};
-  }).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc);
+    let wsc=0, gsc=0;
+    weak.forEach(w=>KW.forEach(k=>{ if(w.includes(k)&&n.includes(k)) wsc+=1; }));  // связь со СЛАБОЙ зоной диагностики
+    KW.slice(0,10).forEach(k=>{ if(n.includes(k)) gsc+=1; });                      // общая управленческая значимость
+    return {i,wsc,gsc};
+  }).filter(x=>x.wsc>0||x.gsc>0)
+    .sort((a,b)=> (b.wsc-a.wsc) || (b.gsc-a.gsc));   // слабые зоны в приоритете, общий вес — тай-брейк
   const idx = scored.length ? scored.slice(0,3).map(x=>x.i)
                             : state.role.skills.slice(0,3).map((_,i)=>i);          // дефолт: первые 3
   return idx;
