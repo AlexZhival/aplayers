@@ -209,6 +209,22 @@ p{font-size:18px;line-height:1.5;font-weight:500}
 #dots button{width:7px;height:7px;border-radius:50%;border:none;background:rgba(255,255,255,.28);cursor:pointer;padding:0;transition:.3s}
 #dots button.on{background:#fff;transform:scale(1.4)}
 @media (max-width:520px){#hint{display:none}}
+
+/* === СЛАЙДЫ-ОПРОСЫ === */
+.pollkick{display:inline-flex;align-items:center;gap:10px;background:var(--purple);color:#fff;
+  text-transform:uppercase;letter-spacing:.12em;font-size:12.5px;font-weight:800;
+  padding:8px 16px;border-radius:100px;margin-bottom:18px;align-self:flex-start}
+.pollkick .live{width:9px;height:9px;border-radius:50%;background:#fff;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(.75)}50%{opacity:1;transform:scale(1.2)}}
+.pollq{font-family:var(--display);font-weight:800;font-size:38px;line-height:1.1;letter-spacing:-.02em;max-width:26ch}
+.polls{display:flex;flex-direction:column;gap:11px;margin-top:24px}
+.pollopt{display:flex;align-items:center;gap:16px;background:var(--lav);border:1.5px solid var(--lav-line);
+  border-radius:14px;padding:13px 20px;font-size:18.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.pollopt .e{font-size:21px;width:26px;text-align:center;flex:none}
+.pollhint{display:inline-flex;align-items:center;gap:13px;align-self:flex-start;margin-top:24px;
+  background:var(--lav);border:1.5px solid var(--lav-line);border-left:5px solid var(--purple);
+  color:var(--ink);padding:13px 22px;border-radius:0 12px 12px 0;font-weight:600;font-size:16.5px}
+.pollhint b{color:var(--purple-press)}
 </style>
 </head>
 <body>
@@ -237,6 +253,21 @@ p{font-size:18px;line-height:1.5;font-weight:500}
     <div class="bigq reveal" style="--i:1">«Мы проиграли по цене».<br><span class="hl script" style="font-size:1.25em">Почти всегда — нет.</span></div>
     <p class="lead reveal" style="--i:3;margin-top:24px">Проигрывают по <b style="color:var(--purple)">ясности ценности</b>, а не по цифре в коммерческом предложении.</p>
     <p class="reveal" style="--i:4;margin-top:12px;color:var(--muted)">Сегодня — оптика (Jobs To Be Done) и инструмент (канва), чтобы это починить.</p>
+  </section>
+
+  <!-- 2б · ОПРОС 1 -->
+  <section class="slide">
+    <div class="dotmotif tr"></div>
+    <div class="pollkick reveal" style="--i:0"><span class="live"></span>Опрос в эфире · 1</div>
+    <div class="pollq reveal" style="--i:1">Можете за 10 секунд сформулировать, почему клиент должен выбрать именно вас?</div>
+    <div class="polls">
+      <div class="pollopt reveal" style="--i:2"><span class="e">✅</span>Да — есть чёткое предложение, и команда его знает</div>
+      <div class="pollopt reveal" style="--i:3"><span class="e">🤔</span>Примерно понимаю, но внятно не сформулирую</div>
+      <div class="pollopt reveal" style="--i:4"><span class="e">💰</span>Честно — конкурируем в основном ценой</div>
+      <div class="pollopt reveal" style="--i:5"><span class="e">🌀</span>У нас «как у всех», просто хорошо работаем</div>
+      <div class="pollopt reveal" style="--i:6"><span class="e">🤷</span>Никогда так не думал(а)</div>
+    </div>
+    <div class="pollhint reveal" style="--i:7"><b>↗ Голосуем в чате трансляции</b> — выберите свой вариант</div>
   </section>
 
   <!-- 3 · 3 ПРИЧИНЫ -->
@@ -293,6 +324,20 @@ p{font-size:18px;line-height:1.5;font-weight:500}
       <div class="jcard reveal pop" style="--i:4"><span class="em">📊</span><h3>Бухгалтерский аутсорс</h3><p class="f"><b>Функция</b> — сданная отчётность · <b>эмоция</b> — не боюсь налоговой · <b>статус</b> — современный собственник.</p></div>
     </div>
     <div class="fnote reveal" style="--i:5">Продаёшь только функцию — бьёшься ценой. Видишь эмоцию и статус — <b>выигрываешь без скидок.</b></div>
+  </section>
+
+  <!-- 7б · ОПРОС 2 -->
+  <section class="slide">
+    <div class="dotmotif tr"></div>
+    <div class="pollkick reveal" style="--i:0"><span class="live"></span>Опрос в эфире · 2</div>
+    <div class="pollq reveal" style="--i:1">Откуда вы знаете, почему клиенты на самом деле покупают у вас?</div>
+    <div class="polls">
+      <div class="pollopt reveal" style="--i:2"><span class="e">🗣️</span>Регулярно спрашиваю клиентов и фиксирую их слова</div>
+      <div class="pollopt reveal" style="--i:3"><span class="e">📊</span>Смотрю на данные: повторные покупки, что берут чаще</div>
+      <div class="pollopt reveal" style="--i:4"><span class="e">💭</span>Есть гипотезы, но напрямую не проверял(а)</div>
+      <div class="pollopt reveal" style="--i:5"><span class="e">🙈</span>Честно — не знаю, додумываю за клиента</div>
+    </div>
+    <div class="pollhint reveal" style="--i:6"><b>↗ Голосуем в чате трансляции</b> — выберите свой вариант</div>
   </section>
 
   <!-- 8 · JTBD-ИНТЕРВЬЮ -->
