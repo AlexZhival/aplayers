@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Почему клиенты выбирают не вас · Точка Нетворк × A-Players</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#7F42E1; --purple-deep:#6A2FD0; --purple-press:#5A26B5;
+  --lav:#F1ECFB; --lav-2:#E7DCFA; --lav-line:#E4D8F8;
+  --ink:#191919; --muted:#6E6A78; --white:#FFFFFF;
+  --coral:#E0556A; --green:#2FB67A;
+  --display:"Golos Text",system-ui,sans-serif; --text:"Golos Text",system-ui,sans-serif;
+  --script:"Caveat",cursive; --mono:ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(120% 120% at 50% 0%,#2a1c4d 0%,#1a1130 70%);
+  font-family:var(--text);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+#stage{position:fixed;left:50%;top:50%;width:1280px;height:720px;
+  transform:translate(-50%,-50%);transform-origin:center center;
+  background:var(--white);border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 120px -30px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+
+.slide{position:absolute;inset:0;padding:54px 70px;opacity:0;visibility:hidden;transform:scale(1.015);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1);
+  display:flex;flex-direction:column;justify-content:center}
+.slide.active{opacity:1;visibility:visible;transform:none;z-index:2}
+
+.reveal{opacity:0;transform:translateY(20px);
+  transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.slide.active .reveal{opacity:1;transform:none;transition-delay:calc(var(--i,0)*70ms + 120ms)}
+.reveal.pop{transform:translateY(20px) scale(.96)}
+.slide.active .reveal.pop{transform:none}
+
+.kicker{font-family:var(--text);text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:700;
+  color:var(--purple);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--purple);display:inline-block}
+h1{font-family:var(--display);font-weight:800;font-size:62px;line-height:1.0;letter-spacing:-.02em}
+h2{font-family:var(--display);font-weight:800;font-size:42px;line-height:1.05;letter-spacing:-.02em;margin-bottom:6px}
+.lead{font-size:21px;line-height:1.45;color:var(--muted);max-width:64ch;font-weight:500}
+p{font-size:18px;line-height:1.5;font-weight:500}
+.hl{color:var(--purple);font-weight:800}
+.script{font-family:var(--script);font-weight:700;font-size:1.18em;line-height:.8;letter-spacing:.01em}
+
+.pill{display:inline-flex;align-items:center;gap:9px;background:var(--purple);color:#fff;
+  font-size:14px;letter-spacing:.02em;padding:10px 18px;border-radius:100px;font-weight:700}
+.pill.ghost{background:transparent;border:1.5px solid var(--purple);color:var(--purple)}
+
+.slide.purple{background:var(--purple);color:#fff;overflow:hidden;padding-bottom:150px}
+.slide.purple h1,.slide.purple h2{color:#fff}
+.slide.purple .lead,.slide.purple p{color:rgba(255,255,255,.86)}
+.slide.purple .kicker{color:#fff} .slide.purple .kicker::before{background:#fff}
+.slide.purple .hl{color:#fff}
+.slide.purple .pill{background:#fff;color:var(--purple)}
+.slide.purple .pill.ghost{background:transparent;border-color:rgba(255,255,255,.6);color:#fff}
+
+.cards{display:grid;gap:18px;margin-top:12px}
+.cards.c3{grid-template-columns:repeat(3,1fr)} .cards.c2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--white);border:1.5px solid var(--lav-line);border-radius:20px;padding:24px 22px}
+.card .num{font-family:var(--display);font-weight:800;font-size:23px;color:#fff;
+  width:48px;height:48px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.card h3{font-family:var(--display);font-weight:700;font-size:21px;margin-bottom:8px;line-height:1.15}
+.card p{font-size:15.5px;color:var(--muted);line-height:1.45}
+.slide.purple .card{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+.slide.purple .card h3{color:#fff} .slide.purple .card p{color:rgba(255,255,255,.82)}
+.slide.purple .card .num{background:#fff;color:var(--purple)}
+
+.steplbl{display:inline-block;font-family:var(--text);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;color:var(--purple);background:var(--lav);padding:7px 14px;border-radius:8px;margin-bottom:14px}
+
+.callout{background:var(--lav);border:1.5px solid var(--lav-line);border-left:6px solid var(--purple);border-radius:18px;padding:24px 28px;margin-top:16px}
+.callout .big{font-family:var(--display);font-weight:700;font-size:24px;line-height:1.22;margin-bottom:10px;color:var(--ink)}
+.callout p{font-size:17px;color:var(--muted);line-height:1.45}
+.callout .vs{margin-top:12px;font-size:16px;color:var(--purple);font-weight:700}
+
+.jcards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.jcard{background:var(--white);border:1.5px solid var(--lav-line);border-radius:20px;padding:22px;border-top:5px solid var(--purple)}
+.jcard .em{font-size:25px;display:block;margin-bottom:10px}
+.jcard h3{font-family:var(--display);font-size:19px;margin-bottom:10px;font-weight:700}
+.jcard .f{font-size:14.5px;line-height:1.5;color:var(--muted)} .jcard .f b{color:var(--ink);font-weight:700}
+
+.segwrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+.segcard{background:var(--lav);border:1.5px solid var(--lav-line);border-radius:18px;padding:20px;border-top:5px solid var(--green)}
+.segcard .tag{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);font-weight:700}
+.segcard h3{font-family:var(--display);font-size:18px;margin:6px 0 8px;font-weight:700}
+.segcard p{font-size:14.5px;color:var(--muted);line-height:1.45}
+
+.ratlist{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.ratrow{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;background:var(--white);border:1.5px solid var(--lav-line);border-radius:14px;padding:12px 20px}
+.ratrow .b{width:32px;height:32px;border-radius:50%;background:var(--purple);color:#fff;font-family:var(--display);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ratrow .claim{font-weight:700;font-size:17px;line-height:1.3} .ratrow .claim b{color:var(--purple)}
+.ratrow .sub{color:var(--muted);font-size:13.5px;margin-top:2px;line-height:1.35;font-weight:500}
+
+.wcanvas{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px}
+.wcol{background:var(--white);border:1.5px solid var(--lav-line);border-radius:20px;padding:20px 22px}
+.wcol.client{border-top:5px solid var(--green)} .wcol.prod{border-top:5px solid var(--purple)}
+.wcol h3{font-family:var(--display);font-size:19px;margin-bottom:12px;font-weight:700}
+.wcol .line{display:flex;gap:10px;margin-bottom:9px;font-size:14.5px;line-height:1.4;font-weight:500}
+.wcol .line .k{font-weight:700;color:var(--ink);min-width:90px;flex-shrink:0} .wcol .line .v{color:var(--muted)}
+
+/* filled 3-col example (pain/expect/gain) */
+.exam3{display:grid;grid-template-columns:1fr 1.18fr 1fr;gap:16px;margin-top:16px}
+.exbox{background:var(--white);border:1.5px solid var(--lav-line);border-radius:18px;padding:18px 20px}
+.exbox h4{font-family:var(--display);font-size:18px;margin-bottom:8px;font-weight:700}
+.exbox.pain{border-top:5px solid var(--coral)} .exbox.exp{border-top:5px solid var(--purple)} .exbox.gain{border-top:5px solid var(--green)}
+.exbox p{font-size:14.5px;color:var(--muted);line-height:1.45}
+.minul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.minul li{position:relative;padding-left:17px;font-size:14px;color:var(--muted);line-height:1.35}
+.minul li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--purple)}
+
+/* duo (matrix + criteria) */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;margin-top:14px}
+.crit{display:flex;flex-direction:column;gap:11px}
+.crit .ci{display:flex;gap:12px;align-items:flex-start;font-size:17px;font-weight:600;line-height:1.3}
+.crit .ci .d{width:24px;height:24px;border-radius:50%;background:var(--purple);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* artefact datasheet */
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-top:14px}
+.spec .row{background:var(--white);border:1.5px solid var(--lav-line);border-radius:12px;padding:11px 16px;border-left:4px solid var(--purple)}
+.spec .row .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--purple);font-weight:700;margin-bottom:3px}
+.spec .row .v{font-size:13.5px;color:var(--ink);line-height:1.35;font-weight:500}
+/* labeled quad card */
+.lbl{display:inline-block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;padding:5px 12px;border-radius:7px;margin-bottom:10px}
+.lbl.gray{background:#EFEFF2;color:#6E6A78} .lbl.pur{background:var(--lav);color:var(--purple)}
+.lbl.grn{background:rgba(47,182,122,.14);color:#1E8C5C} .lbl.cor{background:rgba(224,85,106,.12);color:var(--coral)}
+
+.chips{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px}
+.chip{background:var(--white);border:1.5px solid var(--lav-line);border-radius:18px;padding:20px 24px;flex:1;min-width:220px}
+.chip .t{font-family:var(--display);font-weight:700;font-size:21px;margin-bottom:5px}
+.chip .s{color:var(--muted);font-size:16px} .chip .ic{font-size:26px;margin-bottom:12px;display:block}
+
+.nlist{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.nrow{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:var(--white);border:1.5px solid var(--lav-line);border-radius:14px;padding:14px 22px}
+.nrow .x{color:var(--coral);font-weight:800;font-size:17px}
+.nrow .bad{font-weight:700;font-size:17px}
+.nrow .good{color:var(--purple);font-weight:700;font-size:15.5px;text-align:right}
+
+.fnote{margin-top:20px;font-size:16px;color:var(--muted);display:flex;align-items:center;gap:10px;font-weight:500}
+.fnote b{color:var(--ink)} .slide.purple .fnote b{color:#fff} .slide.purple .fnote{color:rgba(255,255,255,.78)}
+
+.bigq{font-family:var(--display);font-weight:800;font-size:56px;line-height:1.04;letter-spacing:-.02em;max-width:20ch}
+.bigq.sm{font-size:46px}
+
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--purple);color:#fff;font-weight:700;font-size:20px;
+  padding:16px 32px;border-radius:14px;box-shadow:0 18px 38px -14px rgba(127,66,225,.6)}
+.slide.purple .btn{background:#fff;color:var(--purple);box-shadow:0 18px 38px -14px rgba(0,0,0,.35)}
+.btn .ar{font-size:22px}
+
+.logo-img{height:34px;width:auto}
+.brandrow{display:flex;align-items:center;gap:16px;font-size:14px;color:rgba(255,255,255,.8);font-weight:600}
+.speaker{display:flex;align-items:center;gap:14px;margin-top:28px}
+.speaker .av{width:48px;height:48px;border-radius:50%;background:#fff;color:var(--purple);font-family:var(--display);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:20px}
+.speaker .meta b{display:block;font-size:18px;color:#fff} .speaker .meta span{font-size:15px;color:rgba(255,255,255,.75)}
+
+.formula{font-family:var(--display);font-weight:800;font-size:52px;line-height:1.25;letter-spacing:-.01em;margin:12px 0 6px}
+.tok{padding:2px 18px;border-radius:14px;display:inline-block;color:#fff;transform:translateY(14px) scale(.8);opacity:0;transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s}
+.slide.active .tok{transform:none;opacity:1}
+.slide.active .tok.x{transition-delay:.5s}.tok.x{background:var(--purple)}
+.slide.active .tok.y{transition-delay:.75s}.tok.y{background:var(--ink)}
+.slide.active .tok.z{transition-delay:1s}.tok.z{background:var(--purple-press)}
+.legend{display:flex;gap:28px;margin-top:14px;flex-wrap:wrap}
+.legend div{font-size:17px;color:var(--muted);font-weight:500} .legend b{font-family:var(--display);color:var(--purple)}
+.exlist{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.excard{background:var(--lav);border:1.5px solid var(--lav-line);border-left:5px solid var(--purple);border-radius:14px;padding:18px 20px}
+.excard .who{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:8px}
+.excard p{font-size:15.5px;color:var(--ink);line-height:1.4;font-weight:500}
+
+.bcard{background:var(--white);border:1.5px solid var(--lav-line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.bcard .logo{font-family:var(--display);font-weight:800;font-size:25px;display:flex;align-items:center;gap:10px}
+.bcard .logo .d{width:14px;height:14px;border-radius:4px}
+.bcard p{font-size:16px;color:var(--muted);line-height:1.45;font-weight:500}
+.bcard .kpi{margin-top:auto;font-size:13px;letter-spacing:.06em;color:var(--purple);text-transform:uppercase;font-weight:700}
+
+.qrwrap{display:flex;align-items:center;gap:46px;margin-top:18px}
+.qr{width:210px;height:210px;background:#fff;border:1.5px solid var(--lav-line);border-radius:20px;padding:18px;box-shadow:0 24px 50px -24px rgba(127,66,225,.4)}
+.qr svg{width:100%;height:100%}
+.qrtxt h3{font-family:var(--display);font-size:28px;margin-bottom:10px;font-weight:700}
+.qrtxt p{color:var(--muted);font-size:18px;max-width:34ch;font-weight:500}
+
+.checks{display:flex;flex-direction:column;gap:11px;margin:6px 0 22px}
+.checks div{display:flex;align-items:center;gap:13px;font-size:19px;font-weight:600}
+.checks .ck{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.slide:not(.purple) .checks .ck{background:var(--purple);color:#fff}
+
+/* signature ribbons confined to bottom band */
+.ribbons{position:absolute;left:-12%;right:-12%;bottom:0;height:128px;overflow:hidden;z-index:0;pointer-events:none;
+  opacity:0;transition:opacity .8s ease .3s}
+.slide.active .ribbons{opacity:1}
+.ribbon{position:absolute;left:-12%;width:124%;overflow:hidden;white-space:nowrap;padding:10px 0;background:rgba(255,255,255,.14)}
+.ribbon.r1{bottom:46px;transform:rotate(-5deg)}
+.ribbon.r2{bottom:4px;transform:rotate(3.5deg);background:rgba(255,255,255,.10)}
+.ribbon .track{display:inline-block;font-family:var(--display);font-weight:800;letter-spacing:.16em;font-size:20px;color:rgba(255,255,255,.95);animation:marq 32s linear infinite}
+.ribbon.r2 .track{animation-direction:reverse;animation-duration:40s;color:rgba(255,255,255,.78)}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.dotmotif{position:absolute;width:340px;height:340px;border-radius:50%;background:var(--lav);z-index:0;pointer-events:none}
+.dotmotif.br{right:-120px;bottom:-120px} .dotmotif.tr{right:-100px;top:-110px}
+.slide>*{position:relative;z-index:1}
+
+#bar{position:fixed;top:0;left:0;height:4px;background:#C9B4F2;z-index:50;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+#counter{position:fixed;bottom:18px;right:24px;z-index:50;font-family:var(--mono);font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.1em}
+#hint{position:fixed;bottom:18px;left:24px;z-index:50;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.06em}
+#dots{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:50;display:flex;gap:5px;max-width:60%;flex-wrap:wrap;justify-content:center}
+#dots button{width:7px;height:7px;border-radius:50%;border:none;background:rgba(255,255,255,.28);cursor:pointer;padding:0;transition:.3s}
+#dots button.on{background:#fff;transform:scale(1.4)}
+@media (max-width:520px){#hint{display:none}}
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+<div id="stage">
+
+  <!-- 1 · TITLE -->
+  <section class="slide purple">
+    <div class="brandrow reveal" style="--i:0"><img src="assets/tochka-logo-white.svg" alt="точка банк" class="logo-img"><span>× A-Players</span></div>
+    <div style="height:28px"></div>
+    <span class="pill ghost reveal" style="--i:1">Онлайн-вебинар · 25 июня · 17:00</span>
+    <h1 class="reveal" style="--i:2;margin-top:20px;max-width:17ch">Почему клиенты выбирают <span class="script">не вас</span></h1>
+    <p class="lead reveal" style="--i:3;margin-top:18px;color:rgba(255,255,255,.9)">Как найти и усилить ценность предложения через Jobs To Be Done и Value Proposition Canvas</p>
+    <div class="speaker reveal" style="--i:4">
+      <div class="av">А</div>
+      <div class="meta"><b>Александр Животов</b><span>A-Players Group · ex-CCO Skypro (0 → 2,2 млрд ₽)</span></div>
+    </div>
+    <div class="ribbons"><div class="ribbon r1"><span class="track"></span></div><div class="ribbon r2"><span class="track"></span></div></div>
+  </section>
+
+  <!-- 2 · HOOK -->
+  <section class="slide">
+    <div class="dotmotif br"></div>
+    <div class="kicker reveal" style="--i:0">Честный старт</div>
+    <div class="bigq reveal" style="--i:1">«Мы проиграли по цене».<br><span class="hl script" style="font-size:1.25em">Почти всегда — нет.</span></div>
+    <p class="lead reveal" style="--i:3;margin-top:24px">Проигрывают по <b style="color:var(--purple)">ясности ценности</b>, а не по цифре в коммерческом предложении.</p>
+    <p class="reveal" style="--i:4;margin-top:12px;color:var(--muted)">Сегодня — оптика (Jobs To Be Done) и инструмент (канва), чтобы это починить.</p>
+  </section>
+
+  <!-- 3 · 3 ПРИЧИНЫ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Диагноз</div>
+    <h2 class="reveal" style="--i:1">Почему на самом деле выбирают не вас</h2>
+    <div class="cards c3" style="margin-top:28px">
+      <div class="card reveal pop" style="--i:2"><div class="num">1</div><h3>Вы — о себе, клиент — о себе</h3><p>«Качественно, индивидуальный подход, опытная команда» говорят все. Клиент не слышит свою задачу.</p></div>
+      <div class="card reveal pop" style="--i:3"><div class="num">2</div><h3>Продаёте продукт — покупают результат</h3><p>Людям не нужна дрель. Нужна полка на стене и порядок дома.</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">3</div><h3>Ценность не дотянута до боли</h3><p>Сильные стороны есть, но не привязаны к тому, что у клиента болит прямо сейчас.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 · СЛОГАН -->
+  <section class="slide purple" style="justify-content:center;align-items:center;text-align:center">
+    <div class="kicker reveal" style="--i:0;justify-content:center">Правило №1</div>
+    <div class="bigq reveal" style="--i:1;max-width:22ch">Ценность пишется <span class="script" style="font-size:1.2em">словами клиента</span>, а не отдела маркетинга</div>
+    <p class="reveal" style="--i:3;margin-top:22px;color:rgba(255,255,255,.8)">Говорите так, как клиент сам описывает свою проблему — без жаргона.</p>
+    <div class="ribbons"><div class="ribbon r1"><span class="track"></span></div><div class="ribbon r2"><span class="track"></span></div></div>
+  </section>
+
+  <!-- 5 · JTBD НА ПАЛЬЦАХ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Оптика · Jobs To Be Done</div>
+    <h2 class="reveal" style="--i:1">Клиент не покупает продукт — он <span class="hl">«нанимает» его на работу</span></h2>
+    <p class="lead reveal" style="--i:2;margin-top:10px">Справился — нанимает снова и рекомендует. Не справился — «увольняет». Поэтому смотрим не на продукт, а на <b style="color:var(--ink)">работу</b>, которую человек хочет сделать.</p>
+    <div class="cards c3" style="margin-top:22px">
+      <div class="card reveal pop" style="--i:3"><span class="steplbl">Когда</span><h3>Ситуация и триггер</h3><p>В каком контексте человек и что только что случилось.</p></div>
+      <div class="card reveal pop" style="--i:4"><span class="steplbl">Хочу</span><h3>Желаемый результат</h3><p>Какого прогресса он хочет добиться.</p></div>
+      <div class="card reveal pop" style="--i:5"><span class="steplbl">Чтобы</span><h3>Почувствовать иначе</h3><p>Главный драйвер решения — эмоция, а не функция.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:6">Формула работы: <b>«Когда… → хочу… → чтобы…»</b></div>
+  </section>
+
+  <!-- 6 · MILKSHAKE -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Легендарный пример · McDonald's</div>
+    <h2 class="reveal" style="--i:1">За что «нанимают» молочный коктейль?</h2>
+    <div class="callout reveal pop" style="--i:2">
+      <div class="big">40% коктейлей покупали рано утром. Одни. Навынос.</div>
+      <p>Работа была не «выпить вкусного», а <b style="color:var(--ink)">«скрасить скучную долгую дорогу за рулём и не проголодаться до обеда»</b>. Опросы про вкус этого не показывали.</p>
+      <div class="vs">→ Конкуренты коктейля — не другие коктейли, а банан, бублик, пончик и кофе.</div>
+    </div>
+    <div class="fnote reveal" style="--i:3">Поняв работу, McDonald's сделал коктейль гуще — чтобы дольше пить в пробке. <b>Продажи выросли.</b></div>
+  </section>
+
+  <!-- 7 · ЕЩЁ РАБОТЫ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Работа = функция + эмоция + статус</div>
+    <h2 class="reveal" style="--i:1">Одну работу всегда видно на трёх уровнях</h2>
+    <div class="jcards">
+      <div class="jcard reveal pop" style="--i:2"><span class="em">🎬</span><h3>Netflix вечером</h3><p class="f"><b>Когда</b> после 12-часового дня не могу переключиться · <b>хочу</b> отвлечься · <b>чтобы</b> расслабиться и уснуть.</p></div>
+      <div class="jcard reveal pop" style="--i:3"><span class="em">☕</span><h3>Кофе у дома</h3><p class="f"><b>Функция</b> — взбодриться · <b>эмоция</b> — 5 минут для себя · <b>статус</b> — «я пью спешелти».</p></div>
+      <div class="jcard reveal pop" style="--i:4"><span class="em">📊</span><h3>Бухгалтерский аутсорс</h3><p class="f"><b>Функция</b> — сданная отчётность · <b>эмоция</b> — не боюсь налоговой · <b>статус</b> — современный собственник.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:5">Продаёшь только функцию — бьёшься ценой. Видишь эмоцию и статус — <b>выигрываешь без скидок.</b></div>
+  </section>
+
+  <!-- 8 · JTBD-ИНТЕРВЬЮ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Откуда брать работы</div>
+    <h2 class="reveal" style="--i:1">Работу нельзя выдумать — её <span class="hl">узнают в интервью</span></h2>
+    <p class="lead reveal" style="--i:2;margin-top:10px">Гипотезы из головы → канва врёт. Спрашиваем не «что бы вы хотели», а про реальный последний раз.</p>
+    <div class="cards c3" style="margin-top:22px">
+      <div class="card reveal pop" style="--i:3"><div class="num">1</div><h3>Последний реальный случай</h3><p>«Расскажите, как вы в последний раз это покупали / решали». Факты, а не фантазии.</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">2</div><h3>Контекст и триггер</h3><p>Что происходило до? Что переключило на поиск решения именно тогда?</p></div>
+      <div class="card reveal pop" style="--i:5"><div class="num">3</div><h3>Эмоция</h3><p>«Что вы чувствовали?» Здесь прячется настоящий драйвер выбора.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:6">5–7 глубоких интервью на сегмент дают больше, чем 1000 ответов в анкете.</div>
+  </section>
+
+  <!-- 9 · ГРАФ РАБОТ -->
+  <section class="slide" style="justify-content:flex-start">
+    <div class="kicker reveal" style="--i:0">Иерархия работ · граф работ</div>
+    <h2 class="reveal" style="--i:1">У каждой работы есть главная и под-работы</h2>
+    <p class="lead reveal" style="--i:2;margin-top:8px;font-size:19px">Граф работ показывает, какая под-работа <b style="color:var(--ink)">блокирует главную</b> — туда и копаем боль.</p>
+    <svg viewBox="0 0 1130 300" style="width:100%;height:auto;margin-top:8px" font-family="Golos Text,sans-serif">
+      <g class="reveal pop" style="--i:3">
+        <rect x="415" y="14" width="300" height="62" rx="16" fill="#7F42E1"/>
+        <text x="565" y="44" text-anchor="middle" font-weight="800" font-size="19" fill="#fff">Вырастить прибыль</text>
+        <text x="565" y="64" text-anchor="middle" font-size="13" fill="rgba(255,255,255,.85)">главная работа собственника</text>
+      </g>
+      <path class="reveal" style="--i:4" d="M565 76 V110 M145 110 H955 M145 110 V146 M415 110 V146 M685 110 V146 M955 110 V146" stroke="#C9B4F2" stroke-width="2" fill="none"/>
+      <g class="reveal pop" style="--i:5">
+        <rect x="20" y="148" width="250" height="86" rx="14" fill="#F1ECFB" stroke="#E4D8F8" stroke-width="1.5"/>
+        <text x="145" y="184" text-anchor="middle" font-weight="700" font-size="16" fill="#191919">Привлекать клиентов</text>
+        <text x="145" y="208" text-anchor="middle" font-size="12.5" fill="#6E6A78">лидов мало и дорого</text>
+      </g>
+      <g class="reveal pop" style="--i:6">
+        <rect x="290" y="148" width="250" height="86" rx="14" fill="#F1ECFB" stroke="#E4D8F8" stroke-width="1.5"/>
+        <text x="415" y="184" text-anchor="middle" font-weight="700" font-size="16" fill="#191919">Продавать дороже</text>
+        <text x="415" y="208" text-anchor="middle" font-size="12.5" fill="#6E6A78">скидки съедают маржу</text>
+      </g>
+      <g class="reveal pop" style="--i:7">
+        <rect x="560" y="148" width="250" height="86" rx="14" fill="#fff" stroke="#E0556A" stroke-width="2.5"/>
+        <text x="685" y="180" text-anchor="middle" font-weight="800" font-size="16" fill="#191919">Дожимать сделки</text>
+        <text x="685" y="204" text-anchor="middle" font-size="12.5" fill="#E0556A" font-weight="700">теряем здесь больше всего →</text>
+      </g>
+      <g class="reveal pop" style="--i:8">
+        <rect x="830" y="148" width="250" height="86" rx="14" fill="#F1ECFB" stroke="#E4D8F8" stroke-width="1.5"/>
+        <text x="955" y="184" text-anchor="middle" font-weight="700" font-size="16" fill="#191919">Удерживать клиентов</text>
+        <text x="955" y="208" text-anchor="middle" font-size="12.5" fill="#6E6A78">уходят после первой сделки</text>
+      </g>
+    </svg>
+    <div class="fnote reveal" style="--i:9">Ключевая под-работа = где главная работа клиента ломается чаще всего.</div>
+  </section>
+
+  <!-- 10 · КАК ВЫБРАТЬ КЛЮЧЕВУЮ БОЛЬ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Приоритизация боли</div>
+    <h2 class="reveal" style="--i:1">Ключевая боль = <span class="hl">важно × не решено</span></h2>
+    <div class="duo">
+      <svg class="reveal pop" style="--i:2" viewBox="0 0 470 360" font-family="Golos Text,sans-serif">
+        <rect x="245" y="40" width="195" height="135" rx="12" fill="#7F42E1" opacity="0.12"/>
+        <text x="342" y="100" text-anchor="middle" font-weight="800" font-size="16" fill="#7F42E1">Ключевая</text>
+        <text x="342" y="122" text-anchor="middle" font-weight="800" font-size="16" fill="#7F42E1">боль</text>
+        <text x="342" y="146" text-anchor="middle" font-size="12.5" fill="#6E6A78">сюда бьём</text>
+        <line x1="60" y1="40" x2="60" y2="320" stroke="#191919" stroke-width="2"/>
+        <line x1="60" y1="320" x2="450" y2="320" stroke="#191919" stroke-width="2"/>
+        <path d="M60 40 l-5 10 h10 z" fill="#191919"/><path d="M450 320 l-10 -5 v10 z" fill="#191919"/>
+        <line x1="250" y1="40" x2="250" y2="320" stroke="#E4D8F8" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <line x1="60" y1="178" x2="450" y2="178" stroke="#E4D8F8" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <circle cx="345" cy="105" r="13" fill="#7F42E1"/>
+        <circle cx="150" cy="250" r="8" fill="#C9B4F2"/>
+        <circle cx="320" cy="245" r="8" fill="#C9B4F2"/>
+        <circle cx="150" cy="110" r="8" fill="#C9B4F2"/>
+        <text x="255" y="345" font-size="13" fill="#6E6A78" font-weight="600">Не решено сегодня →</text>
+        <text x="34" y="150" font-size="13" fill="#6E6A78" font-weight="600" transform="rotate(-90 34 150)">Важность работы ↑</text>
+      </svg>
+      <div class="crit">
+        <div class="reveal" style="--i:3;font-weight:700;font-size:18px;margin-bottom:2px">Берём боль, которая:</div>
+        <div class="ci reveal" style="--i:4"><span class="d">1</span><span>важна для клиента (бьёт по главной работе)</span></div>
+        <div class="ci reveal" style="--i:5"><span class="d">2</span><span>плохо закрыта существующими решениями</span></div>
+        <div class="ci reveal" style="--i:6"><span class="d">3</span><span>встречается часто, а не у единиц</span></div>
+        <div class="ci reveal" style="--i:7"><span class="d">4</span><span>клиент готов за это платить</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · СЕГМЕНТ = РАБОТА -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Важно для канвы</div>
+    <h2 class="reveal" style="--i:1">Сегмент — это <span class="hl">люди, объединённые работой</span></h2>
+    <p class="lead reveal" style="--i:2;margin-top:8px;font-size:20px">Не «женщины 25–45, доход средний+», а «те, кому нужно сделать одну работу». Один продукт = разные работы = <b style="color:var(--ink)">разные сегменты</b>. Под каждый — своя канва.</p>
+    <p class="reveal" style="--i:3;margin-top:14px;font-weight:700;font-size:17px;color:var(--ink)">Онлайн-школа английского — один продукт, три работы:</p>
+    <div class="segwrap">
+      <div class="segcard reveal pop" style="--i:4"><div class="tag">Сегмент A</div><h3>«Карьера»</h3><p>Получить повышение / оффер, где нужен английский. Боль — стыдно говорить с ошибками на интервью.</p></div>
+      <div class="segcard reveal pop" style="--i:5"><div class="tag">Сегмент B</div><h3>«Путешествия»</h3><p>Не теряться в поездках. Боль — не может объясниться в отеле и аэропорту.</p></div>
+      <div class="segcard reveal pop" style="--i:6"><div class="tag">Сегмент C</div><h3>«Родитель»</h3><p>Помочь ребёнку с учёбой. Боль — не может проверить домашку, нанимает репетитора вслепую.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:7">Разные боли → разные офферы → <b>три отдельные канвы, а не одна на всех.</b></div>
+  </section>
+
+  <!-- 12 · ГАРВАРД -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Разминка перед канвой</div>
+    <h2 class="reveal" style="--i:1">3 вопроса, с которых начинается любое предложение</h2>
+    <div class="cards c3" style="margin-top:30px">
+      <div class="card reveal pop" style="--i:2"><div class="num">?</div><h3>Кого обслуживаем?</h3><p>Один конкретный сегмент, а не «все, кому нужно».</p></div>
+      <div class="card reveal pop" style="--i:3"><div class="num">?</div><h3>Какую потребность закрываем?</h3><p>Какую работу клиента делаем за него.</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">?</div><h3>По какой относительной цене?</h3><p>Чтобы ценность ощущалась честной.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:5">Треугольник <b>Harvard Business School</b></div>
+  </section>
+
+  <!-- 13 · RAT ЧЕК-ЛИСТ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Какой сегмент брать первым</div>
+    <h2 class="reveal" style="--i:1">Чек-лист приоритетного сегмента <span style="font-size:19px;font-weight:600;color:var(--muted)">· Riskiest Assumption Test</span></h2>
+    <div class="ratlist">
+      <div class="ratrow reveal" style="--i:2"><div class="b">1</div><div><div class="claim">Рынок в деньгах <b>достаточно большой</b> для ваших амбиций</div><div class="sub">Рынок растёт · нет законов и регуляторов, которые не дадут сделать продукт</div></div></div>
+      <div class="ratrow reveal" style="--i:3"><div class="b">2</div><div><div class="claim">Есть большой <b>платёжеспособный сегмент</b> с работами, где вы способны сделать значимо ценнее</div><div class="sub">У вас достаточно инвестиций на создание такого продукта</div></div></div>
+      <div class="ratrow reveal" style="--i:4"><div class="b">3</div><div><div class="claim">Вы сделаете продукт, который сегмент будет <b>покупать</b>, и выиграете конкуренцию</div><div class="sub">Есть ресурсы, компетенции и технологии</div></div></div>
+      <div class="ratrow reveal" style="--i:5"><div class="b">4</div><div><div class="claim">В выбранной бизнес-модели сойдётся даже <b>пессимистичная юнит-экономика</b></div><div class="sub">Считаем худший сценарий, а не идеальный</div></div></div>
+      <div class="ratrow reveal" style="--i:6"><div class="b">5</div><div><div class="claim">Вы сможете <b>масштабировать</b> привлечение клиентов</div><div class="sub">Канал роста есть и не упрётся в потолок на первой сотне</div></div></div>
+    </div>
+  </section>
+
+  <!-- 14 · VPC CANVAS (СХЕМА) -->
+  <section class="slide" style="justify-content:flex-start">
+    <div class="kicker reveal" style="--i:0">Инструмент · схема</div>
+    <h2 class="reveal" style="--i:1">Value Proposition Canvas</h2>
+    <svg viewBox="0 0 1130 410" style="width:100%;height:auto;margin-top:4px" font-family="Golos Text,sans-serif">
+      <g class="reveal pop" style="--i:2">
+        <rect x="20" y="34" width="470" height="350" rx="22" fill="#FFFFFF" stroke="#E4D8F8" stroke-width="2"/>
+        <text x="44" y="70" font-weight="800" font-size="21" fill="#7F42E1">Карта ценности</text>
+        <text x="44" y="91" font-size="13.5" fill="#6E6A78">ваш продукт</text>
+      </g>
+      <g class="reveal" style="--i:3">
+        <rect x="44" y="110" width="422" height="74" rx="14" fill="#F1ECFB"/>
+        <text x="64" y="139" font-weight="700" font-size="17" fill="#191919">Продукты и услуги</text>
+        <text x="64" y="162" font-size="13.5" fill="#6E6A78">что вы предлагаете</text>
+      </g>
+      <g class="reveal" style="--i:4">
+        <rect x="44" y="196" width="422" height="74" rx="14" fill="rgba(47,182,122,.14)"/>
+        <text x="64" y="225" font-weight="700" font-size="17" fill="#191919">Чем создаёте выгоды</text>
+        <text x="64" y="248" font-size="13.5" fill="#6E6A78">как даёте желаемый результат</text>
+      </g>
+      <g class="reveal" style="--i:5">
+        <rect x="44" y="282" width="422" height="74" rx="14" fill="rgba(224,85,106,.12)"/>
+        <text x="64" y="311" font-weight="700" font-size="17" fill="#191919">Чем гасите боль</text>
+        <text x="64" y="334" font-size="13.5" fill="#6E6A78">как снимаете конкретную боль</text>
+      </g>
+      <g class="reveal" style="--i:6">
+        <path d="M500 209 H630" stroke="#7F42E1" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <circle cx="565" cy="209" r="30" fill="#7F42E1"/>
+        <text x="565" y="215" text-anchor="middle" font-weight="800" font-size="15" fill="#fff">FIT</text>
+      </g>
+      <g class="reveal pop" style="--i:7">
+        <circle cx="855" cy="209" r="180" fill="#FFFFFF" stroke="#E4D8F8" stroke-width="2"/>
+        <line x1="855" y1="29" x2="855" y2="115" stroke="#E4D8F8" stroke-width="2"/>
+        <line x1="855" y1="303" x2="855" y2="389" stroke="#E4D8F8" stroke-width="2"/>
+        <line x1="700" y1="299" x2="855" y2="209" stroke="#E4D8F8" stroke-width="2"/>
+        <line x1="1010" y1="299" x2="855" y2="209" stroke="#E4D8F8" stroke-width="2"/>
+        <circle cx="855" cy="209" r="60" fill="#F1ECFB"/>
+        <text x="855" y="204" text-anchor="middle" font-weight="800" font-size="16" fill="#7F42E1">Задачи</text>
+        <text x="855" y="223" text-anchor="middle" font-size="12" fill="#6E6A78">клиента</text>
+        <text x="855" y="80" text-anchor="middle" font-weight="700" font-size="17" fill="#2FB67A">Выгоды</text>
+        <text x="855" y="356" text-anchor="middle" font-weight="700" font-size="17" fill="#E0556A">Боли</text>
+        <text x="855" y="18" text-anchor="middle" font-weight="800" font-size="19" fill="#191919">Профиль клиента</text>
+      </g>
+    </svg>
+    <div class="fnote reveal" style="--i:8;margin-top:4px">Всегда заполняем <b>справа налево</b>: сначала клиент, потом продукт.</div>
+  </section>
+
+  <!-- 15 · ЗАПОЛНЕННАЯ КАНВА (ПРИМЕР) -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Тот же инструмент · но заполненный</div>
+    <h2 class="reveal" style="--i:1">Канва на реальном бизнесе <span style="font-size:19px;font-weight:600;color:var(--muted)">· онлайн-школа, сегмент «Карьера»</span></h2>
+    <div class="wcanvas">
+      <div class="wcol client reveal pop" style="--i:2">
+        <h3>① Профиль клиента</h3>
+        <div class="line"><span class="k">Задача</span><span class="v">получить повышение / оффер, где нужен английский</span></div>
+        <div class="line"><span class="k">Боли</span><span class="v">стыдно говорить с ошибками · нет времени на курсы · бросал раньше</span></div>
+        <div class="line"><span class="k">Выгоды</span><span class="v">уверенно пройти интервью · +30% к доходу</span></div>
+      </div>
+      <div class="wcol prod reveal pop" style="--i:3">
+        <h3>② Карта ценности</h3>
+        <div class="line"><span class="k">Продукт</span><span class="v">3-мес интенсив с упором на разговор</span></div>
+        <div class="line"><span class="k">Гасим боль</span><span class="v">20 мин/день в приложении · вернём деньги, если бросишь</span></div>
+        <div class="line"><span class="k">Даём выгоду</span><span class="v">симуляции собеседований · кейсы выпускников</span></div>
+      </div>
+    </div>
+    <div class="callout reveal" style="--i:4;margin-top:14px;padding:16px 24px"><div class="big" style="font-size:20px;margin:0">«Мы помогаем специалистам получить повышение — прокачиваем разговорный английский за 3 месяца по 20 минут в день».</div></div>
+  </section>
+
+  <!-- 16 · БОЛЬ / ОЖИДАНИЕ / ВЫГОДА -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Главное различие</div>
+    <h2 class="reveal" style="--i:1">Боль ≠ ожидание ≠ выгода</h2>
+    <div class="cards c3" style="margin-top:28px">
+      <div class="card reveal pop" style="--i:2;border-top:5px solid var(--coral)"><h3>Боль</h3><p style="font-size:17px;color:var(--ink);margin-bottom:6px"><b>«Плохо сейчас»</b></p><p>Теряю время на отчёты, боюсь ошибиться.</p></div>
+      <div class="card reveal pop" style="--i:3;border-top:5px solid var(--purple)"><h3>Ожидание</h3><p style="font-size:17px;color:var(--ink);margin-bottom:6px"><b>«Так должно быть»</b></p><p>Сдать в срок и без ошибок.</p></div>
+      <div class="card reveal pop" style="--i:4;border-top:5px solid var(--green)"><h3>Выгода</h3><p style="font-size:17px;color:var(--ink);margin-bottom:6px"><b>«Было бы здорово»</b></p><p>Вообще не думать про это.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:5">Кто видит все три — <b>попадает в клиента точно</b>.</div>
+  </section>
+
+  <!-- 17 · ЗАПОЛНЕННЫЙ ПРИМЕР: РОП -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Разбираем вместе · руководитель отдела продаж</div>
+    <h2 class="reveal" style="--i:1">Боль → ожидание → выгода на живом примере</h2>
+    <div class="exam3">
+      <div class="exbox pain reveal pop" style="--i:2"><h4>😣 Боль</h4><p>Слушаю звонки менеджеров вручную — это <b style="color:var(--ink)">съедает 70% времени</b>, и всё равно не успеваю прослушать все звонки всех менеджеров.</p></div>
+      <div class="exbox exp reveal pop" style="--i:3"><h4>🎯 Ожидание</h4><p style="margin-bottom:4px">Нужен инструмент, который:</p><ul class="minul">
+        <li>слушает 100% коммуникаций за меня</li>
+        <li>оценивает качество каждого звонка</li>
+        <li>находит звонки и сделки с ошибками</li>
+        <li>выявляет лиды с риском потери клиента</li>
+        <li>сам подсказывает, что делать</li>
+      </ul></div>
+      <div class="exbox gain reveal pop" style="--i:4"><h4>🚀 Выгода</h4><p>Одной кнопкой оцениваю <b style="color:var(--ink)">все звонки за неделю</b> по нужной когорте и сразу вижу: что дожали, что нет, чего не хватает и что сделать, чтобы довести сделки до оплаты.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:5">Это и есть точное попадание: продукт закрывает <b>конкретную</b> боль и ожидание.</div>
+  </section>
+
+  <!-- 18 · FIT -->
+  <section class="slide purple" style="justify-content:center">
+    <div class="kicker reveal" style="--i:0">Момент истины</div>
+    <div class="bigq sm reveal" style="--i:1">Ценность есть только когда продукт <span class="script" style="font-size:1.2em">дотянулся</span> до боли</div>
+    <p class="lead reveal" style="--i:3;margin-top:22px;color:rgba(255,255,255,.85)">Не «у нас классные фичи», а «<b style="color:#fff">эта фича гасит вот эту боль</b>».</p>
+    <div class="ribbons"><div class="ribbon r1"><span class="track"></span></div><div class="ribbon r2"><span class="track"></span></div></div>
+  </section>
+
+  <!-- 19 · ОТСТРОЙКА: ЗАЧЕМ -->
+  <section class="slide">
+    <div class="dotmotif tr"></div>
+    <div class="kicker reveal" style="--i:0">Отстройка от конкурентов</div>
+    <h2 class="reveal" style="--i:1;max-width:20ch">Понять клиента — половина дела. Вторая — быть <span class="hl">лучше</span> конкретно в чём-то</h2>
+    <p class="lead reveal" style="--i:2;margin-top:14px">Клиент выбирает из вариантов. Если ваша ценность «как у всех» — остаётся воевать ценой. Сильное предложение всегда отвечает: чем мы отличаемся.</p>
+    <div class="callout reveal pop" style="--i:3">
+      <div class="big">Цель отстройки — честно закончить фразу:</div>
+      <p style="font-size:22px;color:var(--purple);font-weight:700">«Мы единственные, кто ______ для ______».</p>
+    </div>
+  </section>
+
+  <!-- 20 · СИСТЕМА АНАЛИЗА КОНКУРЕНТОВ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Шаг 1 · разведка рынка</div>
+    <h2 class="reveal" style="--i:1">Что собираем по конкурентам</h2>
+    <div class="cards c2" style="margin-top:22px">
+      <div class="card reveal pop" style="--i:2"><div class="num">1</div><h3>10 прямых конкурентов</h3><p>Позиционирование, главный оффер, УТП, цены, продуктовая линейка — дословно с их сайтов.</p></div>
+      <div class="card reveal pop" style="--i:3"><div class="num">2</div><h3>Боли через конкурентов</h3><p>Что все они обещают закрыть и как отвечают по-разному. Здесь видно, что клиент реально покупает.</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">3</div><h3>Digital и офферы</h3><p>Каналы, соцсети, сайт, рекламные месседжи. В рекламе слабые места конкурентов видны лучше всего.</p></div>
+      <div class="card reveal pop" style="--i:5"><div class="num">4</div><h3>SWOT + сравнит. таблица</h3><p>Сильные и слабые стороны каждого — сводим всё в одну конкурентную карту рынка.</p></div>
+    </div>
+  </section>
+
+  <!-- 21 · СТРАТЕГИЯ ОТСТРОЙКИ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Шаг 2 · главный выход анализа</div>
+    <h2 class="reveal" style="--i:1">От пробелов рынка — к своему УТП</h2>
+    <div class="cards c2" style="margin-top:22px">
+      <div class="card reveal pop" style="--i:2"><div class="num">①</div><h3>Пробелы рынка</h3><p>Что НЕ делает никто из 10? Какие боли клиентов не закрывает ни один конкурент.</p></div>
+      <div class="card reveal pop" style="--i:3"><div class="num">②</div><h3>Уникальное позиционирование</h3><p>Одна строка: «Мы единственные, кто [что делаем] для [кого]».</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">③</div><h3>УТП под каждый сегмент</h3><p>Своя формулировка отстройки под каждый JTBD-сегмент — не одна на всех.</p></div>
+      <div class="card reveal pop" style="--i:5"><div class="num">④</div><h3>Мониторинг раз в квартал</h3><p>Конкуренты не стоят на месте — преимущество надо защищать регулярно.</p></div>
+    </div>
+  </section>
+
+  <!-- 22 · ОТСТРОЙКА НА ПРИМЕРЕ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Готовый артефакт · онлайн-школа английского</div>
+    <h2 class="reveal" style="--i:1">Как выглядит стратегия отстройки</h2>
+    <div class="cards c2" style="margin-top:20px">
+      <div class="card reveal pop" style="--i:2"><span class="lbl cor">Что у всех</span><p style="color:var(--ink);font-size:16px">«Уроки с носителем», «разговорный клуб», «гарантия уровня» — все обещают одно: «выучить английский».</p></div>
+      <div class="card reveal pop" style="--i:3"><span class="lbl pur">Пробел рынка</span><p style="color:var(--ink);font-size:16px">Никто не привязывает обучение к карьерному результату и не возвращает деньги за брошенный курс.</p></div>
+      <div class="card reveal pop" style="--i:4"><span class="lbl grn">Наша отстройка</span><p style="color:var(--ink);font-size:16px">«Доводим до повышения, а не до сертификата». Результат = новая должность и доход.</p></div>
+      <div class="card reveal pop" style="--i:5"><span class="lbl pur">УТП сегмента «Карьера»</span><p style="color:var(--ink);font-size:16px">«Английский для оффера за 3 месяца — иначе вернём деньги».</p></div>
+    </div>
+  </section>
+
+  <!-- 23 · JTBD-АРТЕФАКТ (ЧТО СОБЕРЁТЕ) -->
+  <section class="slide" style="justify-content:flex-start">
+    <div class="kicker reveal" style="--i:0">Что вы соберёте · разбор сегмента (JTBD-артефакт)</div>
+    <h2 class="reveal" style="--i:1">Пример: собственник-операционист, 100–300 млн ₽/год</h2>
+    <div class="spec">
+      <div class="row reveal" style="--i:2"><div class="k">Портрет</div><div class="v">30–45 лет · 20–80 сотрудников · все ключевые решения по продажам — на нём</div></div>
+      <div class="row reveal" style="--i:3"><div class="k">Главная работа (JTBD)</div><div class="v">выйти из микроменеджмента, не потеряв выручку, и собрать систему предсказуемого роста</div></div>
+      <div class="row reveal" style="--i:4"><div class="k">Функц. задачи</div><div class="v">видеть, где теряем в воронке · управляемый ОП с метриками · нанять сильного РОПа</div></div>
+      <div class="row reveal" style="--i:5"><div class="k">Эмоция</div><div class="v">перестать жить в режиме «выключусь — всё развалится»</div></div>
+      <div class="row reveal" style="--i:6"><div class="k">Ключевые боли</div><div class="v">продажи проседают без него · прибыль не спрогнозировать · РОП «не взлетел» · пожары вместо стратегии</div></div>
+      <div class="row reveal" style="--i:7"><div class="k">Страхи</div><div class="v">снова вложиться без результата · нанять «спецов», которые всё сломают</div></div>
+      <div class="row reveal" style="--i:8"><div class="k">Возражения</div><div class="v">«нет времени» · «команда не потянет» · «уже пробовали — не сработало»</div></div>
+      <div class="row reveal" style="--i:9"><div class="k">Триггер к действию</div><div class="v">застой выручки · провал масштабирования · потеря ключевого человека</div></div>
+    </div>
+    <div class="fnote reveal" style="--i:10">Такой разбор — по каждому сегменту. Это и есть «топливо» для канвы.</div>
+  </section>
+
+  <!-- 24 · НАЛОЖЕНИЕ НА VPC (МОЙ ПРОДУКТ) -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Тот же сегмент → на Value Proposition Canvas</div>
+    <h2 class="reveal" style="--i:1">Наложили на продукт <span style="font-size:19px;font-weight:600;color:var(--muted)">· Практикум A-Players</span></h2>
+    <div class="wcanvas">
+      <div class="wcol client reveal pop" style="--i:2">
+        <h3>① Профиль клиента</h3>
+        <div class="line"><span class="k">Задача</span><span class="v">выйти из операционки, сохранив рост прибыли</span></div>
+        <div class="line"><span class="k">Боли</span><span class="v">всё держится на мне · РОП не взлетел · прибыль непредсказуема</span></div>
+        <div class="line"><span class="k">Выгоды</span><span class="v">автономная команда A-управленцев · +30–100% выручки · 60–70% времени на стратегию</span></div>
+      </div>
+      <div class="wcol prod reveal pop" style="--i:3">
+        <h3>② Карта ценности</h3>
+        <div class="line"><span class="k">Продукт</span><span class="v">4-мес практикум: учится собственник + core-команда</span></div>
+        <div class="line"><span class="k">Гасим боль</span><span class="v">личные разборы воронок и метрик · внедрение, а не теория · учится вся команда</span></div>
+        <div class="line"><span class="k">Даём выгоду</span><span class="v">система управления + бенчмарки лидеров рынка · AI-усиление</span></div>
+      </div>
+    </div>
+    <div class="callout reveal" style="--i:4;margin-top:14px;padding:16px 24px"><div class="big" style="font-size:19px;margin:0">«Помогаем собственнику выйти из операционки — выстраиваем систему управления и команду A-игроков за 4 месяца».</div></div>
+  </section>
+
+  <!-- 25 · 5 ОШИБОК -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Грабли</div>
+    <h2 class="reveal" style="--i:1">5 ошибок при сборке канвы</h2>
+    <div class="nlist">
+      <div class="nrow reveal" style="--i:2"><span class="x">✕</span><span class="bad">Начинают слева, с продукта</span><span class="good">→ начни с клиента</span></div>
+      <div class="nrow reveal" style="--i:3"><span class="x">✕</span><span class="bad">Один сегмент на всех</span><span class="good">→ одна канва = одна работа</span></div>
+      <div class="nrow reveal" style="--i:4"><span class="x">✕</span><span class="bad">Свои гипотезы вместо слов клиента</span><span class="good">→ спроси клиента</span></div>
+      <div class="nrow reveal" style="--i:5"><span class="x">✕</span><span class="bad">Все боли подряд, без приоритета</span><span class="good">→ 1–2 острые</span></div>
+      <div class="nrow reveal" style="--i:6"><span class="x">✕</span><span class="bad">Левая не дотянута до правой</span><span class="good">→ каждая фича лечит боль</span></div>
+    </div>
+  </section>
+
+  <!-- 20 · ФОРМУЛА -->
+  <section class="slide" style="justify-content:center">
+    <div class="kicker reveal" style="--i:0">Ваш вынос сегодня</div>
+    <div class="formula">Мы помогаем <span class="tok x">X</span> делать <span class="tok y">Y</span> с помощью <span class="tok z">Z</span></div>
+    <div class="legend reveal" style="--i:6"><div><b>X</b> — кому</div><div><b>Y</b> — какой результат</div><div><b>Z</b> — как именно</div></div>
+    <div class="exlist">
+      <div class="excard reveal pop" style="--i:7"><div class="who">Онлайн-школа</div><p>«…помогаем специалистам получить повышение, прокачивая разговорный английский».</p></div>
+      <div class="excard reveal pop" style="--i:8"><div class="who">Бухаутсорс</div><p>«…помогаем малому бизнесу не бояться налоговой, ведя бухгалтерию под ключ».</p></div>
+      <div class="excard reveal pop" style="--i:9"><div class="who">Контроль продаж</div><p>«…помогаем РОПу дожимать сделки, оценивая 100% звонков за одну кнопку».</p></div>
+    </div>
+  </section>
+
+  <!-- 21 · ЧТО ДАЛЬШЕ С КАНВОЙ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Канва — не ради канвы</div>
+    <h2 class="reveal" style="--i:1">Готовая канва превращается в 3 вещи</h2>
+    <div class="cards c3" style="margin-top:26px">
+      <div class="card reveal pop" style="--i:2"><div class="num">🌐</div><h3>Оффер на сайте и в КП</h3><p>Заголовок = формула X-Y-Z. Буллеты = ваши «обезболивающие» под боли клиента.</p></div>
+      <div class="card reveal pop" style="--i:3"><div class="num">🗣️</div><h3>Скрипт продаж</h3><p>Продавец говорит про боли и выгоды клиента, а не перечисляет фичи.</p></div>
+      <div class="card reveal pop" style="--i:4"><div class="num">📣</div><h3>Реклама</h3><p>Креативы бьют в конкретную острую боль конкретного сегмента.</p></div>
+    </div>
+    <div class="fnote reveal" style="--i:5">Один раз собрал канву — <b>используешь во всех точках касания.</b></div>
+  </section>
+
+  <!-- 22 · ПРИМЕРЫ БРЕНДОВ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Так делают лучшие</div>
+    <h2 class="reveal" style="--i:1">Продают не продукт — ценность</h2>
+    <div class="cards c3" style="margin-top:26px">
+      <div class="bcard reveal pop" style="--i:2"><div class="logo"><span class="d" style="background:#4A154B"></span>Slack</div><p>Не мессенджер, а экономия времени и удовольствие от работы — вместо завалов почты.</p><div class="kpi">77% компаний Fortune 500</div></div>
+      <div class="bcard reveal pop" style="--i:3"><div class="logo"><span class="d" style="background:#FF5A5F"></span>Airbnb</div><p>«Belong Anywhere». Одна модель — два сегмента: хозяин зарабатывает, гость получает аутентичность.</p><div class="kpi">Ценность для двух сторон сразу</div></div>
+      <div class="bcard reveal pop" style="--i:4"><div class="logo"><span class="d" style="background:#E8A1B6"></span>Bloom &amp; Wild</div><p>Не цветы, а снятие трения: коробка проходит в почтовый ящик, букет приезжает бутонами.</p><div class="kpi">Продукт как сарафан</div></div>
+    </div>
+  </section>
+
+  <!-- 23 · ЧЕК-ЛИСТ ГОТОВНОСТИ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Перед практикумом</div>
+    <h2 class="reveal" style="--i:1">Сильное предложение проходит <span class="hl">5 проверок</span></h2>
+    <div class="ratlist">
+      <div class="ratrow reveal" style="--i:2"><div class="b">✓</div><div><div class="claim">Сформулировано <b>словами клиента</b>, а не вашими</div></div></div>
+      <div class="ratrow reveal" style="--i:3"><div class="b">✓</div><div><div class="claim">Бьёт в <b>1–2 острые боли</b>, а не во все сразу</div></div></div>
+      <div class="ratrow reveal" style="--i:4"><div class="b">✓</div><div><div class="claim">Каждая фича <b>привязана к боли</b> (есть fit)</div></div></div>
+      <div class="ratrow reveal" style="--i:5"><div class="b">✓</div><div><div class="claim">Отличается от конкурентов <b>конкретикой</b>, а не словом «качественно»</div></div></div>
+      <div class="ratrow reveal" style="--i:6"><div class="b">✓</div><div><div class="claim">Помещается в <b>одну фразу</b> X → Y → Z</div></div></div>
+    </div>
+  </section>
+
+  <!-- 24 · CTA ПРАКТИКУМ -->
+  <section class="slide purple">
+    <div class="kicker reveal" style="--i:0">Следующий шаг</div>
+    <h2 class="reveal" style="--i:1;max-width:18ch">Практикум: соберите своё <span class="script" style="font-size:1.15em">предложение</span></h2>
+    <div class="reveal" style="--i:2;margin:16px 0"><span class="pill ghost">29 июня · 18:30 · малые группы</span></div>
+    <div class="checks" style="margin-top:6px">
+      <div class="reveal" style="--i:3"><span class="ck">✓</span> Заполните канву по своему бизнесу</div>
+      <div class="reveal" style="--i:4"><span class="ck">✓</span> Соберёте формулу X → Y → Z</div>
+      <div class="reveal" style="--i:5"><span class="ck">✓</span> Уйдёте с черновиком и списком доработок</div>
+    </div>
+    <div class="reveal" style="--i:6"><span class="btn">Записаться на практикум <span class="ar">→</span></span></div>
+    <p class="reveal" style="--i:7;margin-top:16px;font-size:15px;color:rgba(255,255,255,.7)">Хорошее предложение не собирают в одиночку.</p>
+    <div class="ribbons" style="height:80px"><div class="ribbon r1" style="bottom:6px"><span class="track"></span></div></div>
+  </section>
+
+  <!-- 25 · ЛИД-МАГНИТ -->
+  <section class="slide">
+    <div class="kicker reveal" style="--i:0">Заберите с собой</div>
+    <h2 class="reveal" style="--i:1">Рабочая тетрадь для практикума</h2>
+    <div class="qrwrap">
+      <div class="qr reveal pop" style="--i:2"><svg viewBox="0 0 100 100" id="qr"></svg></div>
+      <div class="qrtxt reveal" style="--i:3">
+        <h3>Сканируйте — заберите шаблоны</h3>
+        <p style="margin-bottom:10px">Внутри: бриф компании · анализ конкурентов и отстройка · JTBD · сегментация · шаблон канвы.</p>
+        <p style="font-size:15px;color:var(--purple);font-weight:600">Бот выдаст материалы после подписки на канал — придёте на практикум подготовленными.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 26 · СПАСИБО -->
+  <section class="slide purple" style="justify-content:center;align-items:center;text-align:center">
+    <img src="assets/tochka-logo-white.svg" alt="точка банк" class="reveal logo-img" style="--i:0;height:40px">
+    <div class="bigq reveal" style="--i:1;margin-top:22px">Спасибо. Ваши <span class="script" style="font-size:1.2em">вопросы?</span></div>
+    <p class="lead reveal" style="--i:3;margin-top:20px;color:rgba(255,255,255,.85)">Александр Животов · A-Players Group</p>
+    <p class="reveal" style="--i:4;margin-top:6px;color:rgba(255,255,255,.6)">До встречи на практикуме 29 июня</p>
+    <div class="ribbons"><div class="ribbon r1"><span class="track"></span></div><div class="ribbon r2"><span class="track"></span></div></div>
+  </section>
+
+</div>
+
+<div id="dots"></div>
+<div id="counter"></div>
+<div id="hint">← → пробел · F — на весь экран</div>
+
+<script>
+const stage=document.getElementById('stage');
+const slides=[...document.querySelectorAll('.slide')];
+const bar=document.getElementById('bar');
+const counter=document.getElementById('counter');
+const dotsWrap=document.getElementById('dots');
+let i=0;
+const phrase="ЦЕННОСТЬ КЛИЕНТА  •  ";
+document.querySelectorAll('.ribbon .track').forEach(t=>t.textContent=phrase.repeat(24));
+slides.forEach((_,n)=>{const b=document.createElement('button');b.onclick=()=>go(n);dotsWrap.appendChild(b);});
+const dots=[...dotsWrap.children];
+function go(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+  bar.style.width=((i+1)/slides.length*100)+'%';
+  counter.textContent=String(i+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+}
+function next(){go(i+1)} function prev(){go(i-1)}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+  else if(e.key==='f'||e.key==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+stage.addEventListener('click',e=>{const r=stage.getBoundingClientRect();(e.clientX-r.left)/r.width>0.45?next():prev();});
+function resize(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720)*0.96;stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+window.addEventListener('resize',resize);
+(function(){
+  // Реальный QR → https://t.me/aplayers_bot?start=dl-1782211331129224a5effe (33×33, коррекция M)
+  const svg=document.getElementById('qr');if(!svg)return;
+  const N=33,u=100/N;
+  const bits="111111100101111010001101001111111100000100000011110001100001000001101110101110110100010111001011101101110101100001111001001001011101101110101001100101110111101011101100000101101010111001100001000001111111101010101010101010101111111000000001111100100000111100000000101111100110111101001010101111100101110010010101010111111101101101000110100011100100000100000010110101000010000001110010110001011100100000110011100101000000000011010110111000000101110111111111101011110011110001011001100100011100110011110010111110010101101111110100000000111011010011001010110110001111011000011111010111101011101101000100101110011111001000000110110111111010101000000101100001111110010000111110101101001001000011011101100001001100101110011111101001101101101110101101000110010011110101001001001001100010100100000110100011101101101111000010111111001000000001000111010011000100010111111111100011111111001101101010100100000101101001010100111100011100101110101011000001011000111111010101110101100011100110110000010111101110101100011110000101001101100100000100100101110110111000010100111111101001010111101010110101010";
+  let html='';
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    if(bits[r*N+c]==='1')html+=`<rect x="${(c*u).toFixed(3)}" y="${(r*u).toFixed(3)}" width="${(u+0.04).toFixed(3)}" height="${(u+0.04).toFixed(3)}" rx="0.45" fill="#7F42E1"/>`;
+  }
+  svg.innerHTML=html;
+})();
+resize();go(0);
+</script>
+</body>
+</html>
