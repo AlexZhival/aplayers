@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Подготовка к воркшопу · VS Code + Claude Code · Точка Нетворк × A-Players</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#7F42E1; --purple-deep:#6A2FD0; --purple-press:#5A26B5;
+  --lav:#F1ECFB; --lav-2:#E7DCFA; --lav-line:#E4D8F8;
+  --ink:#191919; --muted:#6E6A78; --white:#FFFFFF;
+  --coral:#E0556A; --green:#2FB67A;
+  --display:"Golos Text",system-ui,sans-serif; --text:"Golos Text",system-ui,sans-serif;
+  --script:"Caveat",cursive; --mono:ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--lav);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--purple-deep)}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+
+/* HERO */
+.hero{background:radial-gradient(120% 140% at 50% 0%,#8a4ef0 0%,#7F42E1 45%,#6A2FD0 100%);
+  color:#fff;border-radius:0 0 28px 28px;padding:34px 30px 44px;text-align:center;
+  box-shadow:0 26px 60px -28px rgba(106,47,208,.6)}
+.hero .logo{height:30px;opacity:.96;margin-bottom:26px}
+.hero .kicker{text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;font-weight:700;
+  opacity:.9;margin-bottom:14px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:40px;line-height:1.08;letter-spacing:-.02em}
+.hero h1 .script{font-family:var(--script);font-weight:700;font-size:1.32em;line-height:.7;color:#FFE08A}
+.hero p{font-size:18px;line-height:1.5;color:rgba(255,255,255,.9);max-width:54ch;margin:18px auto 0;font-weight:500}
+.hero .meta{display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.hero .chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);
+  padding:8px 15px;border-radius:100px;font-size:13.5px;font-weight:600}
+
+/* SECTIONS */
+section{margin-top:34px}
+h2{font-family:var(--display);font-weight:800;font-size:25px;letter-spacing:-.01em;
+  margin-bottom:6px;display:flex;align-items:center;gap:11px}
+h2 .dot{width:10px;height:10px;border-radius:50%;background:var(--purple);flex:none}
+.sub{color:var(--muted);font-size:16px;margin-bottom:16px}
+
+.card{background:var(--white);border:1.5px solid var(--lav-line);border-radius:18px;
+  padding:22px 24px;margin-top:14px;box-shadow:0 4px 18px -10px rgba(106,47,208,.18)}
+
+/* prerequisite checklist */
+.need{list-style:none;display:grid;gap:12px}
+.need li{display:flex;gap:13px;align-items:flex-start}
+.need .ic{flex:none;width:30px;height:30px;border-radius:9px;background:var(--lav);
+  display:flex;align-items:center;justify-content:center;font-size:16px}
+.need b{color:var(--ink)} .need span{color:var(--muted);font-size:15.5px}
+
+/* OS tabs */
+.tabs{display:inline-flex;gap:6px;background:var(--lav-2);padding:5px;border-radius:13px;margin:6px 0 4px}
+.tabs button{font-family:var(--text);font-weight:700;font-size:15px;border:none;cursor:pointer;
+  padding:9px 20px;border-radius:9px;background:transparent;color:var(--purple-press);transition:.15s}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 3px 10px -4px rgba(106,47,208,.4)}
+.osblock{display:none} .osblock.on{display:block}
+
+/* steps */
+.step{display:flex;gap:16px;margin-top:20px}
+.step .n{flex:none;width:38px;height:38px;border-radius:50%;background:var(--purple);color:#fff;
+  font-family:var(--display);font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
+.step .body{flex:1;padding-top:2px}
+.step h3{font-family:var(--display);font-weight:700;font-size:19.5px;margin-bottom:8px}
+.step ol,.step ul{padding-left:20px;margin:6px 0} .step li{margin:5px 0}
+.done{margin-top:11px;background:#EAF8F1;border-left:4px solid var(--green);border-radius:0 10px 10px 0;
+  padding:9px 14px;font-size:14.5px;color:#1e6e4d}
+.done b{color:#155c3f}
+
+kbd{font-family:var(--mono);font-size:13px;background:#EFEBE0;border:1px solid #ddd2c4;
+  border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:#3a2f1a;white-space:nowrap}
+code{font-family:var(--mono);font-size:14px;background:var(--lav);padding:2px 7px;border-radius:6px;color:var(--purple-press)}
+pre{background:#2a1c4d;color:#EDE7FB;padding:14px 16px;border-radius:12px;overflow-x:auto;
+  font-family:var(--mono);font-size:13.5px;line-height:1.5;margin:10px 0}
+pre code{background:none;color:inherit;padding:0}
+
+.note{background:var(--lav);border:1.5px solid var(--lav-line);border-left:6px solid var(--purple);
+  border-radius:0 14px 14px 0;padding:16px 20px;margin-top:16px}
+.note b{color:var(--purple-press)}
+.warn{border-left-color:var(--coral);background:#FCEEF1;border-color:#F4D3DA}
+.warn b{color:var(--coral)}
+
+/* prep grid */
+.prep{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.prep .p{background:#fff;border:1.5px solid var(--lav-line);border-radius:16px;padding:18px 18px}
+.prep .p .em{font-size:22px;display:block;margin-bottom:8px}
+.prep .p h4{font-family:var(--display);font-size:16.5px;font-weight:700;margin-bottom:5px}
+.prep .p p{font-size:14.5px;color:var(--muted);line-height:1.45}
+
+/* faq */
+details{background:#fff;border:1.5px solid var(--lav-line);border-radius:14px;padding:0;margin-top:10px;overflow:hidden}
+summary{cursor:pointer;padding:15px 18px;font-weight:700;font-family:var(--display);font-size:16.5px;
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--purple);font-size:22px;font-weight:700;line-height:1}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 18px 16px;color:var(--muted);font-size:15.5px;line-height:1.55}
+details .ans b{color:var(--ink)}
+
+/* footer bridge */
+.bridge{margin-top:40px;background:var(--ink);color:#fff;border-radius:22px;padding:28px 30px;text-align:center}
+.bridge .k{text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:700;color:#C9B3F2;margin-bottom:10px}
+.bridge p{font-size:16.5px;color:rgba(255,255,255,.82);max-width:50ch;margin:0 auto}
+.bridge .by{margin-top:14px;font-size:13.5px;color:rgba(255,255,255,.5)}
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+
+@media(max-width:560px){
+  .hero h1{font-size:31px} .prep{grid-template-columns:1fr}
+  .wrap{padding:0 14px 70px} section{margin-top:28px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="logo" src="../assets/tochka-logo-white.svg" alt="точка банк">
+  <div class="kicker">Подготовка к воркшопу</div>
+  <h1>Соберём рабочее место<br>за <span class="script">15 минут</span></h1>
+  <p>На воркшопе мы будем собирать ваше предложение с помощью ИИ прямо в редакторе. Чтобы не терять время на эфире — поставьте два бесплатных инструмента заранее по шагам ниже.</p>
+  <div class="meta">
+    <span class="chip">🧩 VS&nbsp;Code</span>
+    <span class="chip">✱ Claude&nbsp;Code</span>
+    <span class="chip">⏱️ ~15&nbsp;минут</span>
+    <span class="chip">💻 Windows&nbsp;и&nbsp;macOS</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- WHY -->
+  <section>
+    <h2><span class="dot"></span>Зачем это нужно</h2>
+    <p class="sub">Коротко, чтобы было спокойно ставить.</p>
+    <div class="card">
+      <p><b>VS&nbsp;Code</b> — бесплатный редактор от Microsoft. Мы используем его не как «программу для программистов», а как удобное окно, где ИИ-помощник видит ваши файлы и складывает в них готовые материалы.</p>
+      <p style="margin-top:10px"><b>Claude&nbsp;Code</b> — ИИ-помощник от Anthropic, который встраивается внутрь VS&nbsp;Code. Это он на воркшопе будет задавать вопросы про ваш бизнес и собирать предложение. <b>Терминал и навыки программирования не нужны</b> — только переписка в чате.</p>
+    </div>
+  </section>
+
+  <!-- NEED -->
+  <section>
+    <h2><span class="dot"></span>Что понадобится заранее</h2>
+    <div class="card">
+      <ul class="need">
+        <li><span class="ic">🔑</span><div><b>Подписка Claude Pro или Max.</b> <span>Без неё в Claude&nbsp;Code не войти. Оформляется на <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a>, оплата картой. Сделайте это до воркшопа.</span></div></li>
+        <li><span class="ic">💻</span><div><b>Компьютер (Windows или Mac).</b> <span>Со смартфона/планшета не получится — нужен «настольный» компьютер или ноутбук.</span></div></li>
+        <li><span class="ic">⏱️</span><div><b>15 свободных минут и интернет.</b> <span>Лучше не за 5 минут до эфира — поставьте спокойно заранее.</span></div></li>
+      </ul>
+      <div class="note warn"><b>Важно про доступ.</b> Сервисы Anthropic в России работают нестабильно — возможно, понадобится стабильное соединение, чтобы оформить подписку и войти. Если на шаге входа возникнут сложности — напишите нам, поможем заранее, а не на эфире.</div>
+    </div>
+  </section>
+
+  <!-- STEP 1 with OS tabs -->
+  <section>
+    <h2><span class="dot"></span>Шаг 1 · Установить VS&nbsp;Code</h2>
+    <p class="sub">Выберите свою систему:</p>
+    <div class="tabs" role="tablist">
+      <button id="t-win" class="on" onclick="setOS('win')">🪟 Windows</button>
+      <button id="t-mac" onclick="setOS('mac')"> Mac</button>
+    </div>
+
+    <div id="os-win" class="osblock on">
+      <div class="card">
+        <div class="step" style="margin-top:0">
+          <div class="n">1</div>
+          <div class="body">
+            <h3>Скачать установщик</h3>
+            <ol>
+              <li>Откройте сайт <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a>.</li>
+              <li>Нажмите синюю кнопку <b>«Download for Windows»</b> — скачается файл вида <code>VSCodeUserSetup-….exe</code>.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <div class="body">
+            <h3>Запустить и установить</h3>
+            <ol>
+              <li>Откройте скачанный файл, примите соглашение, нажимайте <b>«Далее»</b>.</li>
+              <li>На шаге с галочками <b>оставьте включённой</b> «Add to PATH» и можно отметить «Открывать с помощью Code» — затем <b>«Установить»</b>.</li>
+              <li>В конце нажмите <b>«Завершить»</b> — VS&nbsp;Code откроется сам.</li>
+            </ol>
+            <div class="done"><b>Готово, когда:</b> открылось тёмное окно VS&nbsp;Code с приветствием.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="os-mac" class="osblock">
+      <div class="card">
+        <div class="step" style="margin-top:0">
+          <div class="n">1</div>
+          <div class="body">
+            <h3>Скачать приложение</h3>
+            <ol>
+              <li>Откройте сайт <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a>.</li>
+              <li>Нажмите кнопку <b>«Download for macOS»</b> — скачается архив.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <div class="body">
+            <h3>Перенести в «Программы»</h3>
+            <ol>
+              <li>Откройте скачанный файл и <b>перетащите «Visual Studio Code» в папку «Программы»</b> (Applications).</li>
+              <li>Запустите VS&nbsp;Code из «Программ». Если спросит «открыть приложение из интернета» — подтвердите.</li>
+            </ol>
+            <div class="done"><b>Готово, когда:</b> открылось тёмное окно VS&nbsp;Code с приветствием.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section>
+    <h2><span class="dot"></span>Шаг 2 · Установить помощника Claude&nbsp;Code</h2>
+    <div class="card">
+      <div class="step" style="margin-top:0">
+        <div class="n">1</div>
+        <div class="body">
+          <h3>Открыть «Расширения»</h3>
+          <p>Слева в VS&nbsp;Code — вертикальный ряд иконок. Нажмите <b>«Extensions»</b> (квадратик из кубиков) или сочетание клавиш:</p>
+          <p style="margin-top:8px"><span class="os-win-inline">Windows: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></span><span class="os-mac-inline" style="display:none">Mac: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></span></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="body">
+          <h3>Найти и установить</h3>
+          <ol>
+            <li>В строке поиска наберите <code>Claude Code</code>.</li>
+            <li>Выберите расширение <b>Claude&nbsp;Code от Anthropic</b> (с галочкой-значком издателя) → <b>Install</b>.</li>
+            <li>Если попросит — перезапустите редактор (<span class="os-win-inline"><kbd>Ctrl</kbd></span><span class="os-mac-inline" style="display:none"><kbd>Cmd</kbd></span> + <kbd>Shift</kbd> + <kbd>P</kbd> → наберите <code>Reload Window</code> → Enter).</li>
+          </ol>
+          <div class="note">Альтернатива: откройте в браузере ссылку <code>vscode:extension/anthropic.claude-code</code> — она сама откроет VS&nbsp;Code на странице расширения.</div>
+          <div class="done"><b>Готово, когда:</b> у «Claude&nbsp;Code» в расширениях появилась кнопка <b>«Uninstall»</b> — значит установлено.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section>
+    <h2><span class="dot"></span>Шаг 3 · Войти по подписке</h2>
+    <div class="card">
+      <div class="step" style="margin-top:0">
+        <div class="n">1</div>
+        <div class="body">
+          <h3>Открыть панель Claude&nbsp;Code</h3>
+          <p>Нажмите значок <b>Claude&nbsp;Code (✱)</b> — он появляется в боковой панели слева или в строке состояния внизу окна.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="body">
+          <h3>Sign in</h3>
+          <ol>
+            <li>Нажмите <b>Sign in</b> — откроется браузер.</li>
+            <li>Войдите в свой аккаунт Claude (тот, где оформлена <b>Pro или Max</b>) и подтвердите вход.</li>
+            <li>Вернитесь в VS&nbsp;Code — повторно входить больше не нужно.</li>
+          </ol>
+          <div class="done"><b>Готово, когда:</b> в панели Claude&nbsp;Code появилось поле для ввода — чат готов принять сообщение.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section>
+    <h2><span class="dot"></span>Шаг 4 · Проверить, что всё работает</h2>
+    <div class="card">
+      <p>В поле Claude&nbsp;Code напишите любое сообщение, например:</p>
+      <pre><code>Привет! Ты готов помочь мне на воркшопе?</code></pre>
+      <p>Если пришёл осмысленный ответ — <b>вы готовы к воркшопу</b> 🎉. Ничего больше настраивать заранее не нужно.</p>
+      <div class="note"><b>Совет по качеству (по желанию).</b> В меню режимов панели (вызывается <kbd>Shift</kbd> + <kbd>Tab</kbd>) можно выбрать модель <b>Opus</b> и уровень усилий <b>High</b> — ответы будут глубже. Это не обязательно для старта.</div>
+    </div>
+  </section>
+
+  <!-- PREP -->
+  <section>
+    <h2><span class="dot"></span>Что подготовить к самому воркшопу</h2>
+    <p class="sub">Чтобы ИИ собрал сильное предложение — ему нужен контекст про ваш бизнес. Соберите заранее:</p>
+    <div class="prep">
+      <div class="p"><span class="em">🏢</span><h4>Про ваш бизнес</h4><p>Чем занимаетесь, какой продукт/услуга, для кого, сколько лет на рынке.</p></div>
+      <div class="p"><span class="em">🎯</span><h4>Про клиентов</h4><p>Кто покупает, какие задачи решают, что слышите от них чаще всего.</p></div>
+      <div class="p"><span class="em">⚔️</span><h4>Про конкурентов</h4><p>2–3 главных конкурента и чем вы (на ваш взгляд) отличаетесь.</p></div>
+      <div class="p"><span class="em">💬</span><h4>Реальные отзывы</h4><p>Пара живых отзывов или фраз клиентов — за что вас хвалят и за что ругают.</p></div>
+    </div>
+    <div class="note">Не нужно ничего красиво оформлять — достаточно заметок в свободной форме. Если есть сайт или прайс — тоже пригодятся, можно дать на них ссылку прямо в чате.</div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <h2><span class="dot"></span>Частые вопросы</h2>
+    <details><summary>Нужно ли уметь программировать?</summary><div class="ans">Нет. Вы только пишете в чат обычными словами — как в переписке. Код мы не трогаем.</div></details>
+    <details><summary>Нужен ли терминал / «чёрное окно с командами»?</summary><div class="ans">Нет. Весь интерфейс — это панель Claude&nbsp;Code внутри VS&nbsp;Code. Терминал для воркшопа не понадобится.</div></details>
+    <details><summary>Это платно?</summary><div class="ans"><b>VS&nbsp;Code — бесплатный.</b> Для Claude&nbsp;Code нужна подписка <b>Claude Pro или Max</b> (оформляется на claude.ai) — без неё войти не получится.</div></details>
+    <details><summary>Не вижу значок Claude&nbsp;Code после установки.</summary><div class="ans">Перезапустите редактор: <span class="os-win-inline"><kbd>Ctrl</kbd></span><span class="os-mac-inline" style="display:none"><kbd>Cmd</kbd></span> + <kbd>Shift</kbd> + <kbd>P</kbd> → наберите <code>Reload Window</code> → Enter. И проверьте, что расширение из Шага&nbsp;2 действительно установлено.</div></details>
+    <details><summary>Не пускает войти / просит оплату.</summary><div class="ans">Проверьте, что на аккаунте, которым входите, активна подписка <b>Claude Pro или Max</b>. Если подписка есть, а войти не удаётся — напишите нам заранее.</div></details>
+    <details><summary>У меня старый/слабый компьютер — потянет?</summary><div class="ans">VS&nbsp;Code лёгкий и работает почти на любом ноутбуке. Главное — рабочий интернет.</div></details>
+  </section>
+
+  <!-- BRIDGE -->
+  <div class="bridge">
+    <div class="k">Точка Нетворк × A-Players</div>
+    <p>Готовы? Тогда до встречи на воркшопе — придёте подготовленными и соберёте своё предложение вживую, а не будете тратить эфир на установку.</p>
+    <div class="by">Подготовка к воркшопу · спикер Александр Животов, A-Players</div>
+  </div>
+
+  <div class="foot">Если что-то не получилось — напишите нам <b>заранее</b>, разберёмся до эфира.</div>
+
+</div>
+
+<script>
+function setOS(os){
+  document.getElementById('os-win').classList.toggle('on',os==='win');
+  document.getElementById('os-mac').classList.toggle('on',os==='mac');
+  document.getElementById('t-win').classList.toggle('on',os==='win');
+  document.getElementById('t-mac').classList.toggle('on',os==='mac');
+  document.querySelectorAll('.os-win-inline').forEach(e=>e.style.display=os==='win'?'':'none');
+  document.querySelectorAll('.os-mac-inline').forEach(e=>e.style.display=os==='mac'?'':'none');
+  try{localStorage.setItem('prep_os',os)}catch(e){}
+}
+// автоопределение + запоминание выбора
+(function(){
+  var saved=null; try{saved=localStorage.getItem('prep_os')}catch(e){}
+  var os = saved || (/Mac/i.test(navigator.platform||navigator.userAgent)?'mac':'win');
+  setOS(os);
+})();
+</script>
+</body>
+</html>
