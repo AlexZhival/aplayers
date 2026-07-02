@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12372A">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<title>Домашнее задание · Встреча 1 — Старт и фундамент · A-Players × БПЛ Электро</title>
+
+<!--
+  Домашка БПЛ Электро · Встреча 1. Ссылки Miro / Telegram / транскрибации подставлены.
+  ДОСТУП К СТРАНИЦЕ (логин-гейт): логин bpl · пароль qWCMBPA5QJNU (те же, что для диагностики).
+  Осталось подставить одну ссылку — на рабочую тетрадь (сейчас стоит текст «пришлю в чат практикума»).
+  Гейт клиентский (пароль лежит в коде страницы) — мягкая защита «не для публикации», как пароль на Miro.
+-->
+
+<style>
+  :root{
+    --em:#12372A;--em2:#0F2A20;--gold:#B0822E;--gold2:#C79A45;
+    --bg:#FBF8F1;--card:#fff;--ink:#22302B;--line:#E7E0D2;--muted:#6B756F;
+    --soft:#FFF9EE;--soft-line:#E8D5A8;
+    --red:#9B3B2E;--red-bg:#FBEEEA;--red-line:#E8C7BF;
+    --green:#1C7A52;--green-bg:#EAF3EE;--green-line:#C5DECD;
+    --tg:#2A7DB5;--tg-bg:#EAF2F8;--tg-line:#C4DBEC;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:42px 22px 90px}
+  .brandbar{height:5px;background:linear-gradient(90deg,var(--em),var(--gold));border-radius:6px;margin-bottom:24px}
+  .kick{font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+  h1{font-size:30px;color:var(--em2);margin:.1em 0 .3em;font-weight:800;line-height:1.15}
+  .lead{color:var(--muted);font-size:16px;margin:0 0 6px;max-width:64ch}
+  .deadline{display:inline-flex;align-items:center;gap:8px;background:var(--soft);border:1px solid var(--soft-line);color:#7a5f22;border-radius:9px;padding:8px 13px;font-size:13.5px;font-weight:700;margin-top:12px}
+
+  /* section */
+  .grp{margin:38px 0 0}
+  .grp h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--em);border-bottom:2px solid var(--line);padding-bottom:7px;margin:0 0 16px;display:flex;align-items:center;gap:9px}
+  .grp h2 .ix{font-size:18px}
+
+  /* recap callout */
+  .recap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:22px 0 0;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .recap .rt{font-weight:800;color:var(--em2);font-size:15px;margin-bottom:12px}
+  .princ{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+  .princ div{font-size:14.5px;line-height:1.42;color:var(--ink);padding-left:20px;position:relative}
+  .princ div::before{content:"›";position:absolute;left:0;top:0;color:var(--gold);font-weight:800}
+  .stop{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .stop .s{background:var(--red-bg);border:1px solid var(--red-line);border-radius:11px;padding:11px 13px}
+  .stop .s b{display:block;color:var(--red);font-size:13.5px;font-weight:800;margin-bottom:3px}
+  .stop .s span{font-size:12.5px;color:var(--muted);line-height:1.35}
+
+  /* task cards */
+  .task{display:flex;gap:15px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 13px 13px 0;padding:16px 20px;margin-bottom:11px;box-shadow:0 2px 9px rgba(0,0,0,.045)}
+  .task .num{flex:none;width:30px;height:30px;border-radius:9px;background:var(--em);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .task .b{flex:1;min-width:0}
+  .task h3{margin:2px 0 4px;font-size:18px;color:var(--em2);font-weight:800}
+  .task .d{font-size:14.5px;color:var(--muted);line-height:1.45;margin:0 0 8px}
+  .task ul{margin:8px 0 0;padding-left:18px}
+  .task li{font-size:14px;line-height:1.5;margin:3px 0}
+  .task li b{color:var(--ink)}
+  .pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 9px;border-radius:20px;background:#EFE9DA;color:var(--gold);margin-left:6px;vertical-align:1px}
+
+  a.real{color:var(--em);font-weight:700;text-decoration:none;border-bottom:2px solid var(--gold2)}
+  a.real:hover{color:var(--gold)}
+
+  /* placeholder Alexander fills before sending */
+  .todo{display:inline-flex;align-items:center;gap:6px;background:var(--red-bg);border:1px dashed var(--red);color:#7a2c20;border-radius:8px;padding:5px 10px;font-size:12.5px;font-weight:800;text-decoration:none}
+
+  /* workbook CTA */
+  .cta{display:block;background:linear-gradient(135deg,#12372A,#1d5740);color:#fff;text-decoration:none;border-radius:13px;padding:16px 20px;margin:22px 0 0;box-shadow:0 6px 18px rgba(15,42,32,.18)}
+  .cta b{font-weight:800;font-size:16.5px}
+  .cta span{display:block;font-size:13.5px;opacity:.86;margin-top:3px;line-height:1.4}
+
+  /* reference files */
+  .files{display:flex;flex-direction:column;gap:7px;margin:11px 0 0}
+  .files a{display:block;background:var(--soft);border:1px solid var(--soft-line);border-radius:9px;padding:10px 14px;text-decoration:none;color:var(--em2);font-weight:700;font-size:13.5px}
+  .files a span{display:block;color:var(--muted);font-weight:500;font-size:12.5px;margin-top:2px}
+  .files a:hover{background:#FFF4DD}
+
+  /* prompt block */
+  .prompt-h{margin:15px 0 0;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gold)}
+  .prompt{background:var(--em2);color:#EDE7D6;border-radius:10px;padding:15px 16px;margin-top:7px;font:12.5px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-x:auto}
+
+  .miniwarn{background:var(--red-bg);border:1px solid var(--red-line);border-radius:9px;padding:10px 14px;margin-top:11px;font-size:13px;color:#7a2c20;line-height:1.45}
+  .miniwarn b{color:var(--red)}
+  .result{background:var(--green-bg);border:1px solid var(--green-line);border-radius:9px;padding:10px 14px;margin-top:11px;font-size:13px;color:#1d4a36;line-height:1.45}
+  .result b{color:var(--green)}
+  .hot{font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 9px;border-radius:20px;background:var(--gold);color:#fff;margin-left:8px;vertical-align:2px}
+
+  /* telegram fallback */
+  .tg{background:var(--tg-bg);border:1px solid var(--tg-line);border-radius:12px;padding:15px 17px;margin-top:12px}
+  .tg .tgh{font-weight:800;color:#1d557f;font-size:14.5px;display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .tg p{margin:0 0 9px;font-size:13.5px;line-height:1.5;color:#274b63}
+  .tg ol{margin:0;padding-left:20px}
+  .tg li{font-size:13.5px;line-height:1.5;margin:6px 0;color:#274b63}
+  .tg li b{color:#12303f}
+  .tg li span{color:#4a6577}
+
+  /* tools grid */
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .tool .tn{font-weight:800;color:var(--em2);font-size:16px}
+  .tool .tw{font-size:13px;color:var(--muted);margin:3px 0 7px;line-height:1.4}
+  .tool a{font-size:13px;color:var(--em);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--gold2)}
+  .tool .req{font-size:11px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.04em}
+
+  /* knowledge base */
+  .kb-rec{background:var(--green-bg);border:1px solid var(--green-line);border-radius:12px;padding:15px 18px;margin:0 0 16px;font-size:14.5px;line-height:1.5}
+  .kb-rec b{color:var(--green)}
+  .kbgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .kbcol-h{grid-column:1/-1;font-size:12.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:10px 0 -2px}
+  .kbcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column}
+  .kbcard .kn{font-weight:800;color:var(--em2);font-size:15.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .kbcard .ko{font-size:13px;color:var(--muted);line-height:1.45;margin:7px 0 9px;flex:1}
+  .kbcard a{font-size:12.5px;color:var(--em);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--gold2);align-self:flex-start}
+  .tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+  .tag{font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:2px 7px;border-radius:6px;text-transform:uppercase}
+  .tag.ru{background:#EAF3EE;color:var(--green)}
+  .tag.novpn{background:#EAF0F6;color:#2C5E8A}
+  .tag.vpn{background:var(--red-bg);color:var(--red)}
+  .tag.ai{background:#F2EAF6;color:#6E3E8A}
+  .tag.check{background:var(--soft);color:#8a6a1e}
+  .tag.claude{background:#EFE9DA;color:var(--gold)}
+
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+
+  @media (max-width:680px){
+    .princ,.tools,.kbgrid{grid-template-columns:1fr}
+    .stop{grid-template-columns:1fr}
+    h1{font-size:25px}
+  }
+
+  /* login gate */
+  #gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--em),var(--em2));display:flex;align-items:center;justify-content:center;padding:22px;font:16px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
+  .gate-card{background:var(--card);border-radius:16px;padding:30px 28px;max-width:390px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  .gate-bar{height:5px;background:linear-gradient(90deg,var(--em),var(--gold));border-radius:6px;margin-bottom:18px}
+  .gate-kick{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+  .gate-card h2{margin:0 0 7px;font-size:20px;color:var(--em2);font-weight:800;line-height:1.2}
+  .gate-card p{margin:0 0 17px;font-size:13.5px;color:var(--muted);line-height:1.45}
+  .gate-card label{display:block;font-size:12px;font-weight:700;color:var(--ink);margin:0 0 4px}
+  .gate-card input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:9px;font-size:15px;margin-bottom:12px;background:var(--bg);color:var(--ink)}
+  .gate-card input:focus{outline:2px solid var(--gold2);outline-offset:1px;border-color:var(--gold)}
+  .gate-card button{width:100%;padding:13px;border:0;border-radius:9px;background:linear-gradient(135deg,var(--em),#1d5740);color:#fff;font-size:15px;font-weight:800;cursor:pointer}
+  .gate-card button:hover{filter:brightness(1.08)}
+  .gate-err{display:none;color:var(--red);font-size:13px;font-weight:700;margin-top:11px;text-align:center}
+  .gate-foot{margin-top:15px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.4}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-bar"></div>
+    <div class="gate-kick">A-Players · БПЛ Электро</div>
+    <h2>Домашнее задание · Встреча 1</h2>
+    <p>Доступ для команды БПЛ Электро. Введите логин и пароль — те же, что для диагностики навыков.</p>
+    <label for="gl">Логин</label>
+    <input id="gl" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="bpl">
+    <label for="gp">Пароль</label>
+    <input id="gp" type="password" autocomplete="current-password" placeholder="••••••••">
+    <button id="gb" type="button">Войти</button>
+    <div id="ge" class="gate-err">Неверный логин или пароль. Проверьте раскладку и регистр.</div>
+    <div class="gate-foot">Не открывается? Напишите в чат практикума или в Telegram.</div>
+  </div>
+</div>
+<div class="wrap" id="content" style="display:none">
+  <div class="brandbar"></div>
+  <p class="kick">A-Players · БПЛ Электро · Практикум</p>
+  <h1>Домашнее задание · Встреча 1<br>Старт и фундамент управленческой рамки</h1>
+  <p class="lead">Сегодня заложили фундамент: три слоя работы, ABCDE-игроки, ключевые мышцы менеджера, грейды, управленческая рамка, диагностика и PDP. Ниже — всё, что нужно сделать к следующей встрече. Забронируй слоты в календаре прямо сейчас, пока всё свежо: без действия это просто насмотренность.</p>
+  <div class="deadline">⏳ Домашку присылаем до вторника (7 июля), созвон — в среду. Книга Голдратта — долгосрочная, стартуй уже сейчас.</div>
+
+  <!-- RECAP: ключевые смыслы встречи -->
+  <div class="recap">
+    <div class="rt">Ключевые смыслы встречи — к ним будем возвращаться</div>
+    <div class="princ">
+      <div><b>Управленческое мышление — слой №1.</b> Влияет на результат сильнее навыков и инструментов. На него и будем влиять системно.</div>
+      <div><b>Три слоя работы:</b> навыки → инструменты (ИИ, вайб-кодинг, дашборды) → управленческое мышление.</div>
+      <div><b>ABCDE-игроки:</b> A (15–25%) — поощряем и удерживаем; B/C (65–85%) — развиваем в A; D/E (0–10%) — заменяем. С C-игроком нельзя работать как с A.</div>
+      <div><b>5 мышц менеджера:</b> насмотренность (research) · управление результатом · debug (факторный анализ) · сильная команда · execution (дожать до результата).</div>
+      <div><b>Петля вечных улучшений (Рэй Далио):</b> OKR → Performance Review → диагностика → PDP → one-on-one. Запускаем ежеквартально.</div>
+      <div><b>Марафон, не спринт.</b> Работаем на репрезентативных данных, обратная связь 10/10, договорённости логируем. Незалогированная договорённость = несуществующая.</div>
+    </div>
+    <div class="stop">
+      <div class="s"><b>«Мы это уже делали»</b><span>Не дало результата — значит, сделали плохо, а не «не работает».</span></div>
+      <div class="s"><b>«У нас особая ниша»</b><span>Система управления у всех устроена одинаково. Отличаются нюансы, не принципы.</span></div>
+      <div class="s"><b>«Пробовали — не вышло»</b><span>Значит, не дожали до конца. В эту иллюзию не играем.</span></div>
+    </div>
+  </div>
+
+  <!-- WORKBOOK: подставить ссылку на рабочую тетрадь, когда будет; сейчас — нейтральный текст -->
+  <div class="cta" style="cursor:default">
+    <b>📒 Рабочая тетрадь практикума (Google Sheets)</b>
+    <span>Здесь — траектория, все домашки и материалы; сюда же прикрепляете выполненные задания. Ссылку пришлю отдельно в чат практикума.</span>
+  </div>
+
+  <!-- GROUP A -->
+  <div class="grp">
+    <h2><span class="ix">①</span> Доступы и инструменты</h2>
+
+    <div class="task">
+      <div class="num">1</div>
+      <div class="b">
+        <h3>Зайти в рабочую доску Miro</h3>
+        <p class="d">Наш основной рабочий инструмент на все месяцы — туда выгружаются материалы, плейбуки и референсы, и примерно за 5–6 месяцев она превратится в вашу библиотеку знаний. Зайди, представься (фамилия, имя, должность), укажи свою суперсилу (1–2, строго в бизнес-контексте) и топ-1 запрос на практикум, поставь фото.</p>
+        <a class="real" href="https://miro.com/app/board/uXjVH_heYRM=/?share_link_id=931292969090" target="_blank" rel="noopener">Открыть доску Miro →</a> &nbsp;·&nbsp; пароль <b>44445555</b>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="num">2</div>
+      <div class="b">
+        <h3>Настроить календарь</h3>
+        <p class="d">Календарь — базовый инструмент тайм-менеджмента на практикуме. Позже мы будем аудировать календари и подключим «второй мозг», который анализирует расписание и подсказывает калибровки.</p>
+        <ul>
+          <li>Принять приглашение на встречи (придёт на почту, которую оставил).</li>
+          <li><b>Забронировать повторяющиеся слоты</b> на домашку — 2–3 часа в неделю в одно и то же время.</li>
+          <li>Сохранить ссылку на запись на персональные разборы.</li>
+        </ul>
+        <a class="real" href="https://calendly.com/zhivotov-alexander/a-players?month=2026-07" target="_blank" rel="noopener">Записаться на персональный разбор →</a>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="num">3</div>
+      <div class="b">
+        <h3>Установить рабочий стек <span class="pill">подробности ниже</span></h3>
+        <p class="d">Claude · VS Code · Claude в браузере · Whisper · Miro · Календарь. Что и зачем ставить — в разделе <a class="real" href="#tools">«Инструменты»</a>. Никаких Gemini/GPT — работаем только в Claude.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP B -->
+  <div class="grp">
+    <h2><span class="ix">②</span> Фундамент управленческой рамки</h2>
+
+    <div class="task">
+      <div class="num">4</div>
+      <div class="b">
+        <h3>Выбрать, где собирать базу знаний (плейбуки)</h3>
+        <p class="d">Это не корпоративные регламенты в CRM (Claude их не читает напрямую), а отдельная библиотека плейбуков по слоям: стратегия и управление, продажи, маркетинг и привлечение, снабжение и операции, аналитика и сегментация, команда / найм / HR. Выбери платформу в разделе <a class="real" href="#kb">«Где собирать базу знаний»</a> и заведи структуру. Главный критерий — <b>Claude должен читать базу напрямую</b>, иначе будете носить файлы руками, и база умрёт.</p>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="num">5</div>
+      <div class="b">
+        <h3>Пройти диагностику и собрать PDP (персональный план развития) <span class="hot">главное задание недели</span></h3>
+        <p class="d">Диагностика модели поведения (A–E игроки) + оценка навыков по вашей роли. Она ни на что не влияет и никого не оценивает «на увольнение» — нужна, чтобы честно посмотреть в зеркало и собрать план развития. Главное правило честности: не можешь привести 2–3 реальных примера навыка за последний месяц — ставь уровень ниже.</p>
+        <ul>
+          <li>Войти в личный кабинет по ссылке ниже (логин / пароль).</li>
+          <li>Заполнить контакты и текущий результат.</li>
+          <li>Подробно заполнить компанию: ниша, бизнес-модель, продукт, тип бизнеса, этап развития.</li>
+          <li><b>Выбрать роль:</b> основатель/собственник — «предприниматель», остальные — «управленец».</li>
+          <li>Пройти тест моделей поведения (14–15 моделей) — честно, глядя в зеркало.</li>
+          <li>Выбрать свою роль → откроются портреты навыков по грейдам junior / middle / senior.</li>
+          <li>Вписать <b>топ 2–3 проекта, которые ты лидируешь</b>, каждый с чётким образом результата (Definition of Done). «Сделать x3» — это не проект; проект — конкретный драйвер, что именно ты делаешь, чтобы двинуть метрику.</li>
+          <li>Выбрать <b>2–3 навыка на квартал</b> (больше не берём — навык формируется ~66 дней): текущий уровень → целевой (максимум +1 грейд за квартал). Пропорция плана — 80% практика / 20% теория.</li>
+          <li>Получить PDP: отправить в Telegram, скачать слоты в календарь, сохранить PDF в базу знаний (папка «PDP» — через квартал вернёмся к ретроспективе).</li>
+        </ul>
+        <a class="real" href="https://aplayers-diagnostika.zhivotov-alexander.workers.dev/" target="_blank" rel="noopener">Открыть диагностику навыков управления →</a><br>
+        <span style="font-size:13px;color:var(--muted)">Логин: <b>bpl</b> · Пароль: <b>qWCMBPA5QJNU</b></span>
+
+        <!-- TELEGRAM FALLBACK -->
+        <div class="tg">
+          <div class="tgh">✈️ Не нашёл свою роль на этапе выбора роли?</div>
+          <p>Если на шаге выбора роли (для анализа навыков управления) вы не увидели свою должность в списке — напишите мне в личку в Telegram: <a class="real" href="https://t.me/AlexanderZhivotov" target="_blank" rel="noopener">@AlexanderZhivotov</a>, и я за день соберу портрет вашей роли и добавлю в диагностику. Чтобы я собрал его точно — пришлите ответы на 6 вопросов:</p>
+          <ol>
+            <li><b>Роль.</b> <span>Как точно называется твоя должность, кому подчиняешься и кто у тебя в подчинении (сколько людей и кто).</span></li>
+            <li><b>ЦКП.</b> <span>Какой ценный конечный продукт ты производишь — что на выходе твоей работы и по чему понятно, что ты сделал её хорошо.</span></li>
+            <li><b>Проекты за последние 2 квартала.</b> <span>Какие проекты ты вёл. По каждому коротко: задача, какой был чёткий образ результата (что считалось «готово»), что получилось по факту.</span></li>
+            <li><b>KPI и метрики.</b> <span>Какие KPI стоят у тебя в системе мотивации (за что идёт бонус) и за какие метрики ты отвечаешь в целом, даже если их нет в мотивации.</span></li>
+            <li><b>Инструменты и экспертиза.</b> <span>Какими системами, инструментами и методологиями пользуешься. Что нужно знать и уметь, чтобы делать эту работу сильно, а не на троечку.</span></li>
+            <li><b>Уровни.</b> <span>Что из своих задач ты спокойно отдал бы новичку, а что можешь делать только ты или человек твоего уровня. Где для тебя граница между джуном и сеньором в этой роли.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="task" style="border-left-width:6px;background:#FFFDF8">
+      <div class="num">6</div>
+      <div class="b">
+        <h3>Управленческая рамка <span class="hot">главное задание недели</span></h3>
+        <p class="d">По своей роли собери первую версию управленческой рамки — в черновом виде, идеальной быть не должна. Плюс заведи такие же рамки по каждому сотруднику твоей команды. Рамка — это набор твёрдых повторяющихся ритуалов роли: у сильных управленцев именно железобетонные ритуалы становятся ключом к росту. Чтобы не собирать руками — делаем через Claude по референсам.</p>
+
+        <p class="d" style="margin-top:10px"><b>Что понадобится (3 файла):</b></p>
+        <div class="files">
+          <a href="https://docs.google.com/spreadsheets/d/18N_QmjeGXGQysabwj16esGRy_imxJWswKDviDxaroEk/edit?gid=1995865898#gid=1995865898" target="_blank" rel="noopener">① Референс — эталонный CEO Dashboard<span>Структура: слои → ритуалы → инструмент → частота → KPI → статус</span></a>
+          <a href="https://docs.google.com/spreadsheets/d/1Y-E4k7OdP2w-Kd6LrV4kSDnxW4_SbPWZpsvGgpmbplo/edit?usp=sharing" target="_blank" rel="noopener">② Референс рамки РОП<span>Здесь же — карта типовых встреч роли</span></a>
+          <a href="https://drive.google.com/drive/folders/1oqcY4bIrs5XI6dKZ4YS-NXCyGzEMroWn" target="_blank" rel="noopener">③ Портрет вашей роли<span>Смета навыков по всем ролям, разбита на грейды junior / middle / senior — найдите свою роль и скачайте. Нет вашей роли? Соберём по 6 вопросам из задания №5.</span></a>
+        </div>
+
+        <p class="d" style="margin-top:12px"><b>Порядок:</b> скачайте референсы и портрет своей роли → новый чат в Claude, прикрепите файлы → скопируйте промпт ниже, заполните поля в [квадратных скобках], отправьте → ответьте на уточняющие вопросы Claude (не пропускайте этот шаг) → получившийся файл доведите руками: уберите ритуалы не про ваш бизнес, проставьте реальные статусы. Рамка без вашей валидации — это не рамка, а заготовка.</p>
+
+        <div class="prompt-h">Универсальный промпт — копировать целиком</div>
+        <pre class="prompt">Ты - опытный операционный директор и методолог управления. Твоя задача - собрать
+управленческую рамку (управленческий дашборд) для роли [РОЛЬ] в компании.
+
+Контекст компании: [НАЗВАНИЕ, ниша, бизнес-модель, оборот, размер команды,
+кто в подчинении у этой роли].
+
+Во вложении три файла:
+1. Референс - эталонный CEO Dashboard. Используй его структуру и глубину
+   детализации: слои → ритуалы → описание → инструмент → частота → KPI/образ
+   результата → статус. Если в референсе есть карта типовых встреч - сделай
+   такую же для моей роли.
+2. Портрет моей роли - смета навыков по грейдам junior/middle/senior.
+   Это основа: рамка строится от этих навыков и обязанностей, а не из общих
+   представлений о роли.
+
+Правила сборки:
+1. Строй от портрета роли по принципу Парето: сначала определи 20% ритуалов,
+   которые дают 80% результата этой роли в моем контексте. Это ядро рамки.
+2. Собирай рамку под уровень senior, но раздели на два блока: «Ядро»
+   (внедряем в первые 90 дней, максимум 15-20 ритуалов) и «Расширение».
+3. У каждого ритуала: конкретный инструмент (таблица, CRM, дашборд, встреча),
+   частота (ежедневно / еженедельно / ежемесячно / ежеквартально),
+   измеримый KPI или образ результата.
+4. Не выдумывай ритуалы ради объема. Если ритуал не влияет на деньги,
+   качество или скорость - не включай.
+5. Добавь колонку «Статус»: Есть / В развитии / Требует внедрения -
+   оставь пустой, я заполню сам после валидации.
+6. Перед сборкой задай мне до 5 уточняющих вопросов про специфику компании
+   и роли. Только после моих ответов собирай рамку.
+
+Формат результата: Excel-файл с такой же структурой и оформлением,
+как референс, чтобы я мог загрузить его в Google Sheets.</pre>
+
+        <div class="result"><b>Образ результата:</b> Excel / Google Sheets с рамкой вашей роли, где ядро — не больше 15–20 ритуалов, у каждого есть инструмент, частота и KPI, и вы сами проставили статусы. Эту рамку приносим на разбор.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="num">7</div>
+      <div class="b">
+        <h3>Календарь one-on-one + логирование коммуникаций</h3>
+        <p class="d">Пропишите конкретно: с кем, когда и с какой частотой проводите 1:1. С ключевыми — раз в неделю, с остальными — раз в две недели (минимальная планка). Поставьте в календарь как повторяющиеся встречи, которые нельзя скипать.</p>
+        <p class="d" style="margin-top:8px">One-on-one — это методология, а не «просто поговорить»: повестка с двух сторон до встречи, разбор по приоритетам, обязательное логирование договорённостей. Это калибровочная станция — здесь про энергию, состояние и человеческое, а не про жёсткий план-факт. Записи встреч, транскрибация и переписки сохраняются уже сейчас — это сырьё для AI-разбора перформанса и коммуникаций.</p>
+        <div class="files">
+          <a href="https://readymag.website/profiru/dao/?ref=vc.ru" target="_blank" rel="noopener">Статья: как проводить one-on-one<span>Эталонное описание методологии</span></a>
+          <a href="https://docs.google.com/spreadsheets/d/1V0nhHybWuRUVLMhzTPI3Qv048oOPEDYYk6wcnQznUl0/edit?usp=sharing" target="_blank" rel="noopener">Шаблон для проведения one-on-one<span>Берите готовым или адаптируйте</span></a>
+        </div>
+        <div class="miniwarn"><b>Незалогированная договорённость = несуществующая.</b> Есть два типа людей — калибруемые и некалибруемые. Если после 1:1 не появляется договорённость, плейбук или калибровка — вы не влияете на результат.</div>
+        <p class="d" style="margin-top:11px">📌 Позже подключим «второй мозг» — он будет анализировать ваши встречи и переписки и после каждого 1:1 присылать разбор коммуникации и точки роста во взаимодействии с командой.</p>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="num">8</div>
+      <div class="b">
+        <h3>Прочитать «Цель» Голдратта <span class="pill">долгосрочное · старт сейчас</span></h3>
+        <p class="d">Обязательно к прочтению — основа предиктивных моделей и поиска моделей масштабирования. Ключевая задача: разобраться, что такое «бутылочные горлышки». Понадобится, когда пойдём строить модель управления. Прочитаешь — будем на одном языке.</p>
+        <a class="real" href="https://drive.google.com/file/d/14uoqhjk0e1Ja84HqaTLgPO-y6dYZPQp9/view?usp=sharing" target="_blank" rel="noopener">Скачать книгу «Цель» →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="grp" id="tools">
+    <h2><span class="ix">⚙</span> Инструменты — что установить</h2>
+    <div class="kb-rec" style="background:var(--soft);border-color:var(--soft-line);color:#5a4a28">
+      Ставим заранее, чтобы на следующей встрече не спотыкаться. Для РФ часть сервисов требует VPN / одноразовый номер для регистрации и оплаты — если что-то не ставится, пишите в чат, поможем организовать. Работаем <b>только в Claude</b>.
+    </div>
+    <div class="tools">
+      <div class="tool">
+        <div class="tn">Claude</div>
+        <div class="tw">Основная нейросеть. Через неё вайб-кодим и собираем решения. 90% всего, что делаем, — через Claude.</div>
+        <span class="req">обязательно</span> · <a href="https://claude.ai/" target="_blank" rel="noopener">claude.ai</a>
+      </div>
+      <div class="tool">
+        <div class="tn">VS Code + Claude Code</div>
+        <div class="tw">Редактор для вайб-кодинга. Внутри ставим расширение Claude Code.</div>
+        <span class="req">обязательно</span> · <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a>
+      </div>
+      <div class="tool">
+        <div class="tn">Claude в браузере (Chrome)</div>
+        <div class="tw">Расширение-копайлот: подключается к вашим интерфейсам (CRM, рекламные кабинеты, почта) и делает рутину за вас.</div>
+        <span class="req">обязательно</span> · <a href="https://chromewebstore.google.com/detail/claude/fcoeoabgfenejglbffodgkkbkcdhcgfn?hl=ru" target="_blank" rel="noopener">установить в Chrome</a>
+      </div>
+      <div class="tool">
+        <div class="tn">Whisper (Wispr Flow)</div>
+        <div class="tw">Диктовка вместо печати — промпты наговариваем голосом, печатать замучаетесь. Хорошо понимает русскую речь.</div>
+        <span class="req">обязательно</span> · <a href="https://wisprflow.ai/" target="_blank" rel="noopener">wisprflow.ai</a> · беспл. альтернатива <a href="https://lispr.ai/ru" target="_blank" rel="noopener">Lispr</a>
+      </div>
+      <div class="tool">
+        <div class="tn">Miro</div>
+        <div class="tw">Рабочая доска: контекст, материалы, плейбуки, референсы.</div>
+        <span class="req">уже подключаешь</span> · <a href="https://miro.com/" target="_blank" rel="noopener">miro.com</a>
+      </div>
+      <div class="tool">
+        <div class="tn">Календарь</div>
+        <div class="tw">Тайм-менеджмент, слоты на домашку, запись на разборы.</div>
+        <span class="req">обязательно</span>
+      </div>
+    </div>
+    <div class="kb-rec" style="margin:14px 0 0">
+      Для регистрации из РФ может понадобиться: <b>VPN</b> (VANYA VPN · hitvpn.app · hmyname.net), <b>одноразовый номер</b> (9grizzlysms.com · onlinesim.io), <b>оплата тарифа</b> (WantToPayBot · zabugor pay · paymentserv).
+    </div>
+  </div>
+
+  <!-- KNOWLEDGE BASE -->
+  <div class="grp" id="kb">
+    <h2><span class="ix">📚</span> Где собирать базу знаний — выбери платформу</h2>
+    <div class="recap" style="margin-top:0">
+      <div class="rt">Зачем вообще база знаний</div>
+      <p style="margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)">Невозможно выстроить воспроизводимую, масштабируемую технологию, не описывая принципы, по которым она работает. Всё, что мы проходим, превращается в плейбуки вашей компании — по слоям (стратегия, продажи, маркетинг, снабжение/операции, аналитика, команда/HR). Без этого нет преемственности: новый сотрудник должен изучать не только продукт, но и как у вас устроена система управления. И нет выхода из операционки.</p>
+      <a class="real" style="display:inline-block;margin-top:11px" href="https://alexzhival.github.io/playbooks" target="_blank" rel="noopener">Референс — моя библиотека плейбуков →</a>
+    </div>
+
+    <div class="kb-rec">
+      <b>Как выбирать.</b> В РФ важны 4 критерия: (1) Claude читает базу напрямую, (2) работает без VPN, (3) закрытый контур / контроль данных, (4) ИИ-поиск и онбординг. <br>
+      <b>Простой старт под Claude</b> — Obsidian или локальная папка с Markdown (можно синхронизировать через Яндекс.Диск, без VPN): Claude читает такие файлы напрямую. <b>Если нужен ИИ-ассистент-наставник для команды</b> — смотри RU-платформы (Teamly / Minerva) или кастом на Яндекс.Облаке. Ниже — все варианты с моими пометками, выбирай под себя.
+    </div>
+
+    <div class="kbgrid">
+      <div class="kbcol-h">Простые — Claude читает напрямую</div>
+
+      <div class="kbcard">
+        <div class="kn">Obsidian <div class="tags"><span class="tag claude">под Claude</span><span class="tag novpn">без VPN</span></div></div>
+        <div class="ko">Markdown-редактор и база знаний на локальных файлах. Истинная мощь — в связях между заметками. Claude читает папку напрямую. Лучший простой старт для плейбуков.</div>
+        <a href="https://obsidian.md/" target="_blank" rel="noopener">obsidian.md →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Notion <div class="tags"><span class="tag ai">ИИ-поиск</span><span class="tag vpn">в РФ нужен VPN</span></div></div>
+        <div class="ko">Сквозной поиск по всей базе работает супер. Минус — в РФ без VPN использовать нельзя.</div>
+        <a href="https://www.notion.com/" target="_blank" rel="noopener">notion.com →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">NotebookLM (Google) <div class="tags"><span class="tag ai">ИИ</span><span class="tag vpn">РФ недоступен</span></div></div>
+        <div class="ko">Новый ИИ-инструмент от Google для работы с документами. Для РФ — location unsupported.</div>
+        <a href="https://notebooklm.google/" target="_blank" rel="noopener">notebooklm.google →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Локальная папка + Яндекс.Диск <div class="tags"><span class="tag claude">под Claude</span><span class="tag novpn">без VPN</span></div></div>
+        <div class="ko">Markdown-файлы в синхронизируемой папке. Claude видит всё сразу, синхрон между командой бесплатно, в РФ работает без VPN. По сути — то же, что Obsidian.</div>
+        <a href="https://disk.yandex.ru/" target="_blank" rel="noopener">disk.yandex.ru →</a>
+      </div>
+
+      <div class="kbcol-h">RU-платформы с ИИ-ассистентом — проверить детали под пилот</div>
+
+      <div class="kbcard">
+        <div class="kn">Teamly <div class="tags"><span class="tag ru">РФ</span><span class="tag ai">ИИ-ассистент</span><span class="tag check">проверить</span></div></div>
+        <div class="ko">Ответы ИИ на основе ваших знаний, закрытый контур, API/WebHooks. ⚠️ Проверить: авто-дообучение при загрузке новых документов, полный деплой в контуре клиента, качество поиска по вашим типам документов, права доступа.</div>
+        <a href="https://teamly.ru/" target="_blank" rel="noopener">teamly.ru →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Minerva Knowledge <div class="tags"><span class="tag ru">РФ</span><span class="tag ai">GenAI-агент</span><span class="tag check">проверить</span></div></div>
+        <div class="ko">Платформа управления знаниями с AI: интеллектуальный поиск + диалоговый GenAI-агент. ⚠️ Проверить: автономный деплой без внешнего API, авто-дообучение, права доступа для ИИ.</div>
+        <a href="https://minervasoft.ru/kms" target="_blank" rel="noopener">minervasoft.ru/kms →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Yonote <div class="tags"><span class="tag ru">РФ</span><span class="tag ai">AI-помощник</span><span class="tag check">проверить</span></div></div>
+        <div class="ko">Надёжная RU-альтернатива Notion/Confluence, появился свой AI-помощник. ⚠️ Нет публичных деталей про RAG, авто-векторизацию базы и онбординг сотрудников, локальный деплой.</div>
+        <a href="https://yonote.ru/" target="_blank" rel="noopener">yonote.ru →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Platrum <div class="tags"><span class="tag ru">РФ</span><span class="tag ai">ИИ-тренер</span><span class="tag check">проверить</span></div></div>
+        <div class="ko">Сервис автоматизации менеджмента (10+ инструментов): база знаний, обучение, ИИ-тренер. ⚠️ Не подтверждено, что работает как «ИИ-агент по документам с дообучением при новых данных».</div>
+        <a href="https://platrum.ru/" target="_blank" rel="noopener">platrum.ru →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Just AI — ИИ-база знаний <div class="tags"><span class="tag ru">РФ</span><span class="tag ai">RAG</span><span class="tag check">проверить</span></div></div>
+        <div class="ko">Цифровая ИИ-база знаний для поиска по корпоративным данным. ⚠️ Уточнить: размещение в контуре клиента / облаке РФ без VPN, сценарий «сотрудник спрашивает — ИИ отвечает», тарифы.</div>
+        <a href="https://just-ai.com/ai-baza-znaniy" target="_blank" rel="noopener">just-ai.com →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Teachbase <div class="tags"><span class="tag ru">РФ</span><span class="tag check">онбординг</span></div></div>
+        <div class="ko">LMS — заточена под первичный/вторичный онбординг команды с внутренней аналитикой, а не как аналог Confluence. ИИ уточняем у фаундера. Использовал лично — топ под обучение.</div>
+        <a href="https://teachbase.ru/" target="_blank" rel="noopener">teachbase.ru →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Slite <div class="tags"><span class="tag ai">ИИ</span><span class="tag check">данные/РФ</span></div></div>
+        <div class="ko">⚠️ Не видно публично: деплой в контуре РФ, работа без передачи данных за рубеж / без VPN, авто-обновление ИИ при новых документах. Где физически хранятся данные — под вопрос.</div>
+        <a href="https://slite.com/" target="_blank" rel="noopener">slite.com →</a>
+      </div>
+
+      <div class="kbcol-h">Кастом и прочее</div>
+
+      <div class="kbcard">
+        <div class="kn">Яндекс.Облако (Yandex Cloud) <div class="tags"><span class="tag ru">РФ</span><span class="tag novpn">без VPN</span><span class="tag claude">свой ИИ-агент</span></div></div>
+        <div class="ko">Облачная платформа в контуре РФ: объектное хранилище под базу + YandexGPT + векторный поиск. На ней разворачивается собственный ИИ-агент по вашим документам — данные не покидают РФ, работает без VPN. Правильный путь, если нужен закрытый контур и полный контроль данных.</div>
+        <a href="https://yandex.cloud/ru" target="_blank" rel="noopener">yandex.cloud →</a>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Кастомное решение <div class="tags"><span class="tag claude">свой ИИ-агент</span><span class="tag novpn">закрытый контур</span></div></div>
+        <div class="ko">Правильный путь: структурируем ваши данные → строим поверх собственного ИИ-агента (онбординг + ответы по документам). Полностью безопасно: ЯндексGPT + n8n + локальное хранилище + векторизация + инструкции агенту.</div>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">1С <div class="tags"><span class="tag ru">РФ</span><span class="tag check">ограниченный ИИ</span></div></div>
+        <div class="ko">Технически всё перечисленное сделать можно, самое доступное решение. Но ограниченный список ИИ — современной команде будет тяжело работать в нём как в базе знаний.</div>
+      </div>
+
+      <div class="kbcard">
+        <div class="kn">Битрикс <div class="tags"><span class="tag check">не для базы знаний</span></div></div>
+        <div class="ko">Как CRM — ок, но переезжать в Битрикс ради базы знаний смысла нет, и Claude не читает её напрямую.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORG -->
+  <div class="grp">
+    <h2><span class="ix">✅</span> Организационное</h2>
+    <div class="recap" style="margin-top:0">
+      <p style="margin:0 0 8px;font-size:14.5px;line-height:1.5;color:var(--ink)"><b>Домашка лёгкая — не откладывайте.</b> Здесь всё по инструкции: зашёл, ввёл логин/пароль, прошёл, получил результат. Реально закрывается за 30–40 минут. Но приносим на разбор только <b>после валидации:</b> первую сырую выдачу нейросети без вашей проверки видно за секунду — такую встречу отменю и попрошу довести результат.</p>
+      <div class="princ">
+        <div>Записаться на персональный разбор можно самостоятельно через мой календарь (ссылка в задании №2 и в чате).</div>
+        <div>Вопросы по неделе — пишите в чат, отвечаем оперативно. Можно и мне в личку.</div>
+        <div>За запуск петли улучшений (OKR / PR / диагностика / PDP / 1:1) назначен ответственный — координирует ежеквартальный цикл.</div>
+        <div>Материалы практикума не публикуем и не шерим. Это интеллектуальная собственность, за которую вы заплатили, — пусть работает на вас.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP -->
+  <div class="grp">
+    <h2><span class="ix">❓</span> Если запутались или появился вопрос по модулю</h2>
+    <div class="recap" style="margin-top:0">
+      <ol style="margin:0;padding-left:22px;font-size:15px;line-height:1.6">
+        <li>Откройте Claude и загрузите <a class="real" href="https://docs.google.com/document/d/1MmH8wLHmSRyUGDZDm-79GqVwHhhoI9IhoV8FbWavv7k/edit?usp=sharing" target="_blank" rel="noopener">транскрибацию встречи</a> (она также будет в рабочем файле).</li>
+        <li>Сформулируйте вопрос прямо в чате → ИИ ответит на основе материала встречи.</li>
+        <li>Если вопрос остался — отметьте меня в чате, подключусь.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="foot">
+    A-Players · Практикум · домашнее задание после Встречи 1. Материалы — только для команды БПЛ Электро, не для публикации.
+  </div>
+</div>
+
+<script>
+(function(){
+  var L="bpl", P="qWCMBPA5QJNU";
+  var gate=document.getElementById('gate'), content=document.getElementById('content');
+  function store(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+  function read(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+  function unlock(){ gate.style.display='none'; content.style.display='block'; }
+  if(read('bpl_hw_ok')==='1') unlock();
+  function tryLogin(){
+    var l=(document.getElementById('gl').value||'').trim().toLowerCase();
+    var p=(document.getElementById('gp').value||'').trim();
+    if(l===L && p===P){ store('bpl_hw_ok','1'); unlock(); }
+    else { document.getElementById('ge').style.display='block'; }
+  }
+  document.getElementById('gb').addEventListener('click', tryLogin);
+  ['gl','gp'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); tryLogin(); } });
+  });
+  try{ document.getElementById('gl').focus(); }catch(e){}
+})();
+</script>
+</body>
+</html>
