@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#143A2D">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><text y='.9em' font-size='90'>🎛️</text></svg>">
+<title>Домашнее задание · Предиктивная модель · A-Players</title>
+<style>
+  :root{
+    --bg:#F4F1EA;--bg2:#EFE9D9;--card:#FCFAF4;--ink:#16201B;--muted:#5A6056;--line:#DCD4C2;
+    --em:#143A2D;--em2:#0F2C22;--gold:#B0822E;--gold2:#C79A45;--green:#3E8E5E;
+    --soft:#FFF9EE;--soft-line:#E8D5A8;
+    --red:#9B3B2E;--red-bg:#FBEEEA;--red-line:#E8C7BF;
+    --green-bg:#EAF3EE;--green-line:#C5DECD;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 -apple-system,Segoe UI,Roboto,Manrope,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:42px 22px 90px}
+  .brandbar{height:5px;background:linear-gradient(90deg,var(--em),var(--gold));border-radius:6px;margin-bottom:24px}
+  .kick{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+  h1{font-size:32px;color:var(--em2);margin:.1em 0 .3em;font-weight:800;line-height:1.12}
+  .lead{color:var(--muted);font-size:16.5px;margin:0 0 6px;max-width:66ch}
+  .deadline{display:inline-flex;align-items:center;gap:8px;background:var(--soft);border:1px solid var(--soft-line);color:#7a5f22;border-radius:9px;padding:8px 13px;font-size:13.5px;font-weight:700;margin-top:14px}
+
+  .grp{margin:40px 0 0}
+  .grp h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--em);border-bottom:2px solid var(--line);padding-bottom:7px;margin:0 0 16px;display:flex;align-items:center;gap:9px}
+  .grp h2 .ix{font-size:18px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .rt{font-weight:800;color:var(--em2);font-size:15px;margin-bottom:10px}
+  .princ{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+  .princ div{font-size:14.5px;line-height:1.42;padding-left:20px;position:relative}
+  .princ div::before{content:"›";position:absolute;left:0;top:0;color:var(--gold);font-weight:800}
+
+  a.real{color:var(--em);font-weight:700;text-decoration:none;border-bottom:2px solid var(--gold2)}
+  a.real:hover{color:var(--gold)}
+  .todo{display:inline-flex;align-items:center;gap:6px;background:var(--red-bg);border:1px dashed var(--red);color:#7a2c20;border-radius:8px;padding:3px 9px;font-size:12px;font-weight:800;text-decoration:none}
+
+  /* materials */
+  .files{display:flex;flex-direction:column;gap:7px;margin:6px 0 0}
+  .files a,.files .fitem{display:block;background:var(--soft);border:1px solid var(--soft-line);border-radius:9px;padding:10px 14px;text-decoration:none;color:var(--em2);font-weight:700;font-size:14px}
+  .files a span,.files .fitem span{display:block;color:var(--muted);font-weight:500;font-size:12.5px;margin-top:2px}
+  .files a:hover{background:#FFF4DD}
+
+  /* method tabs */
+  .mtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 16px}
+  .mtab{position:relative;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:14px 15px;cursor:pointer;transition:.15s;font-family:inherit}
+  .mtab:hover{border-color:var(--gold2)}
+  .mtab .mt-n{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+  .mtab .mt-t{display:block;font-size:16px;font-weight:800;color:var(--em2);margin-top:3px;line-height:1.2}
+  .mtab .mt-s{display:block;font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+  .mtab[aria-selected="true"]{border-color:var(--em);background:#fff;box-shadow:0 6px 16px rgba(15,42,32,.12)}
+  .mtab[aria-selected="true"]::after{content:"";position:absolute;left:15px;right:15px;bottom:-9px;height:3px;background:var(--gold);border-radius:3px}
+  .rec{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:var(--gold);color:#fff;border-radius:20px;padding:2px 7px;margin-left:6px;vertical-align:1px}
+
+  .mpanel{display:none;animation:fade .25s}
+  .mpanel.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+  .mpanel .mp-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .mpanel h3{font-size:20px;color:var(--em2);font-weight:800;margin:0}
+  .mpanel .mp-when{font-size:13px;color:var(--muted)}
+  .mpanel .mp-desc{font-size:14.5px;color:var(--muted);line-height:1.5;margin:6px 0 12px}
+
+  ol.steps{margin:6px 0 0;padding-left:0;counter-reset:s;list-style:none}
+  ol.steps li{position:relative;padding:2px 0 12px 40px;font-size:14.5px;line-height:1.5}
+  ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:8px;background:var(--em);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  ol.steps li b{color:var(--ink)}
+
+  .prompt-h{margin:14px 0 0;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--gold)}
+  .prompt{background:var(--em2);color:#EDE7D6;border-radius:10px;padding:14px 15px;margin-top:7px;font:13px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-x:auto}
+
+  .pc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .pc .col{border-radius:11px;padding:12px 14px}
+  .pc .pros{background:var(--green-bg);border:1px solid var(--green-line)}
+  .pc .cons{background:var(--red-bg);border:1px solid var(--red-line)}
+  .pc h4{margin:0 0 7px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+  .pc .pros h4{color:var(--green)}.pc .cons h4{color:var(--red)}
+  .pc ul{margin:0;padding-left:18px}
+  .pc li{font-size:13.5px;line-height:1.45;margin:4px 0}
+
+  .note{margin-top:14px;font-size:13.5px;color:var(--muted);border-left:3px solid var(--gold);padding-left:12px;line-height:1.5}
+  .note b{color:var(--ink)}
+  .miniwarn{background:var(--red-bg);border:1px solid var(--red-line);border-radius:9px;padding:11px 14px;margin-top:12px;font-size:13.5px;color:#7a2c20;line-height:1.45}
+  .miniwarn b{color:var(--red)}
+  .result{background:var(--green-bg);border:1px solid var(--green-line);border-radius:9px;padding:11px 14px;margin-top:12px;font-size:13.5px;color:#1d4a36;line-height:1.45}
+  .result b{color:var(--green)}
+
+  /* prompts helper grid */
+  .phelp{display:flex;flex-direction:column;gap:10px}
+  .phelp .ph{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 16px}
+  .phelp .ph .pn{font-weight:800;color:var(--em2);font-size:15px}
+  .phelp .ph .pw{font-size:12.5px;color:var(--muted);margin:1px 0 8px}
+
+  .cta{display:block;background:linear-gradient(135deg,var(--em),#1d5740);color:#fff;text-decoration:none;border-radius:13px;padding:16px 20px;margin:16px 0 0;box-shadow:0 6px 18px rgba(15,42,32,.18)}
+  .cta b{font-weight:800;font-size:16px}
+  .cta span{display:block;font-size:13.5px;opacity:.86;margin-top:3px;line-height:1.4}
+
+  .foot{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+
+  @media (max-width:700px){
+    .princ,.mtabs,.pc{grid-template-columns:1fr}
+    h1{font-size:26px}
+  }
+</style>
+<style id="aplgate-style">
+#aplgate{position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#143A2D,#0F2C22);display:flex;align-items:center;justify-content:center;padding:22px;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+#aplgate .gc{background:#FCFAF4;border-radius:16px;padding:30px 28px;max-width:390px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+#aplgate .gb{height:5px;background:linear-gradient(90deg,#143A2D,#B0822E);border-radius:6px;margin-bottom:18px}
+#aplgate .gk{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#B0822E;margin-bottom:7px}
+#aplgate h2{margin:0 0 7px;font-size:20px;color:#0F2C22;font-weight:800;line-height:1.2;font-family:inherit}
+#aplgate p{margin:0 0 16px;font-size:13.5px;color:#5A6056;line-height:1.45}
+#aplgate label{display:block;font-size:12px;font-weight:700;color:#16201B;margin:0 0 4px}
+#aplgate input{width:100%;padding:12px 14px;border:1px solid #DCD4C2;border-radius:9px;font-size:15px;margin-bottom:12px;background:#F4F1EA;color:#16201B}
+#aplgate input:focus{outline:2px solid #C79A45;border-color:#B0822E}
+#aplgate button{width:100%;padding:13px;border:0;border-radius:9px;background:linear-gradient(135deg,#143A2D,#1d5740);color:#fff;font-size:15px;font-weight:800;cursor:pointer}
+#aplgate .ge{display:none;color:#9B3B2E;font-size:13px;font-weight:700;margin-top:11px;text-align:center}
+</style>
+</head>
+<body>
+<div id="aplgate"><div class="gc"><div class="gb"></div><div class="gk">A-Players · Практикум</div><h2>Домашнее задание</h2><p>Доступ для участников практикума. Введите логин и пароль.</p><label for="agl">Логин</label><input id="agl" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="логин"><label for="agp">Пароль</label><input id="agp" type="password" autocomplete="current-password" placeholder="пароль"><button id="agb" type="button">Войти</button><div id="age" class="ge">Неверный логин или пароль.</div></div></div>
+<div class="wrap" id="content" style="display:none">
+  <div class="brandbar"></div>
+  <p class="kick">A-Players · Практикум · Предиктивные модели</p>
+  <h1>Соберите предиктивную модель своей компании</h1>
+  <p class="lead">Предиктивная модель — это пульт управления, который <b>гарантирует</b> достижение цели: сверху запаздывающие метрики компании (выручка, маржа, прибыль), под ними — блоки отделов с их воронками (опережающие), а в основе — драйверы-проекты, которыми вы крутите цифры. На этой домашке вы формулируете <b>кросс-командную модель компании</b>: каждый отдел даёт свой блок, вместе они складываются в единый пульт. Три способа сборки — на выбор.</p>
+  <div class="deadline">⏳ Дедлайн — к следующей встрече. На разбор приходим с собранной моделью.</div>
+
+  <!-- ЗАЧЕМ / ЧТО НА ВЫХОДЕ -->
+  <div class="grp">
+    <h2><span class="ix">◆</span> Зачем и что на выходе</h2>
+    <div class="card">
+      <div class="rt">Образ результата (критерий «сделано»)</div>
+      <div class="princ">
+        <div>Одна <b>кросс-командная модель</b> на месяц с разбивкой по неделям, на реальных цифрах (точка А = W0).</div>
+        <div>Наверху — <b>запаздывающие метрики компании</b> (выручка, маржа, чистая прибыль). Под ними — блоки отделов.</div>
+        <div>Метрик у отдела может быть больше — но <b>2–3 обязательно выделены как царь-метрики</b>: те, с которых еженедельно не снимают руку с пульса. Плюс воронка (опережающие) и <b>3–5 драйверов</b>.</div>
+        <div>У каждой метрики: <b>план, факт и ОДИН ответственный</b>, прокрашено светофором.</div>
+        <div>Светофор: 🟩 ≥100% плана · 🟨 90–99% · 🟥 &lt;90%.</div>
+        <div>Назначен <b>ОДИН владелец</b> сборки общей модели (обычно офис CEO / собственник).</div>
+      </div>
+      <div class="note"><b>Про царь-метрики и «мало метрик».</b> Царь-метрики — это не потолок, а выделенный костяк: метрик у отдела может быть и больше, но <b>2–3 из них — ключевые, за которыми следят еженедельно по каждому отделу</b>. Правило «мало метрик на экране» — чтобы пульт читался за 5 минут; общая кросс-командная модель объединяет все отделы, поэтому суммарно метрик больше — и это нормально. Задача домашки — <b>сформулировать и собрать модель</b>; поиск горлышек и дебаг — отдельный модуль.</div>
+    </div>
+  </div>
+
+  <!-- ПРОЕКТЫ ИЗ ДИАГНОСТИКИ -->
+  <div class="grp">
+    <h2><span class="ix">🗂</span> Ваши проекты из диагностики → это ваши «ручки»</h2>
+    <div class="card">
+      <p style="margin:0 0 12px;font-size:14.5px;line-height:1.5">Когда вы проходили диагностику навыков управления, каждый из вас выписал свои ключевые проекты. А <b>второй шаг построения модели — выбрать «ручки» (драйверы)</b>, которыми вы крутите метрики. Часть этих проектов вполне может оказаться такой ручкой внутри вашего отдела.</p>
+      <p style="margin:0 0 14px;font-size:14.5px;line-height:1.5">Поэтому, когда будете простраивать дерево метрик своего отдела в кросс-командной модели, <b>загляните в свои проекты</b>: не нужно ли вытащить из какого-то из них ключевую метрику — опережающий или запаздывающий показатель. Все проекты — вашими же словами — здесь:</p>
+      <a class="cta" href="projects.html" target="_blank" rel="noopener" style="margin:0">
+        <b>🗂 Открыть проекты команды из диагностики</b>
+        <span>Дословный список: кто какие ключевые проекты ведёт.</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- МАТЕРИАЛЫ -->
+  <div class="grp">
+    <h2><span class="ix">📎</span> Что понадобится · материалы</h2>
+    <p class="lead" style="margin-bottom:12px">Скачайте/откройте эти материалы — они пригодятся в любом из трёх способов. Плюс соберите <b>свои опорные материалы</b>: цель, ниша и бизнес-модель, оргструктура отдела, последняя отчётность (план-факт, воронка, экономика).</p>
+    <div class="files">
+      <a class="real" href="https://docs.google.com/document/d/1Pae189OjEWdkpD9U9oGc1cFsB06GrOeugquEcQbuUlc/edit?usp=sharing" target="_blank" rel="noopener">Инструкция · 8 шагов построения модели<span>Главный протокол — чек-лист сборки модели</span></a>
+      <a class="real" href="https://docs.google.com/document/d/1U2GpGyRg5DoLYZ9EUOtD1ntS-psltYi1ouNVg7bO1AY/edit" target="_blank" rel="noopener">Чек-лист тактической модели<span>Плейбук: как собрать модель отдела</span></a>
+      <a class="real" href="https://docs.google.com/document/d/1XZry12GPFLAf_qV_XQ_WJUt-a2z-4VB08bYCwN9Lr9A/edit" target="_blank" rel="noopener">Чек-лист модели отдела продаж<span>Специализированный чек-лист для sales-воронки</span></a>
+      <a class="real" href="https://docs.google.com/spreadsheets/d/1WSFzYqeDRRMTdU9Fsc0Z2fqFSDKxdx6Y7vlw-kvPb6E/edit" target="_blank" rel="noopener">Шаблон модели · пример B2C<span>Структура и оформление таблицы</span></a>
+      <a class="real" href="https://docs.google.com/spreadsheets/d/1IzVMIoaaWugeUxo1YayT8dijcIA0IssO/edit" target="_blank" rel="noopener">Шаблон модели · пример B2B/B2C<span>Второй референс структуры</span></a>
+      <a class="real" href="https://docs.google.com/document/d/16VFNXd_YAIdLGancngE_Cv3h6kvHPuiBkudS8IeaQ8E/edit?usp=sharing" target="_blank" rel="noopener">Транскрипт встречи<span>Подробное объяснение метода вживую</span></a>
+    </div>
+  </div>
+
+  <!-- ТРИ СПОСОБА -->
+  <div class="grp">
+    <h2><span class="ix">🛠</span> Три способа собрать модель — выберите свой</h2>
+    <p class="lead" style="margin-bottom:16px">Все три способа рабочие и приводят к одному результату — готовой модели. Выберите тот, что ближе. Ниже у каждого — шаги, промпт и плюсы/минусы.</p>
+
+    <div class="mtabs" role="tablist">
+      <button class="mtab" role="tab" aria-selected="true" data-p="p1">
+        <span class="mt-n">Способ 1</span>
+        <span class="mt-t">В Excel с Claude<span class="rec">точнее всего</span></span>
+        <span class="mt-s">Claude собирает модель прямо в таблице, с формулами</span>
+      </button>
+      <button class="mtab" role="tab" aria-selected="false" data-p="p2">
+        <span class="mt-n">Способ 2</span>
+        <span class="mt-t">В Claude (браузер) — проект</span>
+        <span class="mt-s">Проект-контейнер: закидываете материалы и ссылки</span>
+      </button>
+      <button class="mtab" role="tab" aria-selected="false" data-p="p3">
+        <span class="mt-n">Способ 3</span>
+        <span class="mt-t">Вайб-кодинг · VS Code</span>
+        <span class="mt-s">VS Code + Claude Code по папке проекта</span>
+      </button>
+    </div>
+
+    <!-- ПАНЕЛЬ 1 -->
+    <div class="mpanel on" id="p1" role="tabpanel">
+      <div class="mp-head"><h3>Способ 1 · В Excel с Claude</h3><span class="mp-when">рекомендуем для точных цифр</span></div>
+      <p class="mp-desc">Claude подключается прямо к таблице и собирает модель внутри неё — с формулами и пересчётом. Это самый «инженерный» способ: вы работаете в живой модели, а не в тексте.</p>
+      <ol class="steps">
+        <li>Откройте <b>шаблон модели</b> (из «Материалов») в Google Sheets или Excel — это ваш каркас.</li>
+        <li>Подключите Claude к таблице: расширение <b>Claude в браузере</b> на открытой Google-таблице (или Claude для Excel).</li>
+        <li>Скормите материалы: <b>ваши опорные</b> (компания, отдел, цель, отчётность) · инструкция 8 шагов · чек-лист тактической модели · чек-лист модели отдела продаж · транскрипт · шаблон.</li>
+        <li>Запустите сборку промптом ниже: Claude ведёт по 8 шагам, задаёт вопросы, заполняет таблицу вашими реальными цифрами и <b>закладывает формулы</b>.</li>
+        <li>Подставляйте значения-допущения → модель пересчитывается вживую. Докалибровывайте прямо в диалоге, пока каскад не сойдётся.</li>
+      </ol>
+      <div class="prompt-h">Промпт запуска — копировать целиком</div>
+      <pre class="prompt">Ты работаешь прямо в этой таблице. В материалах — данные о моём бизнесе и отделе,
+цель, чек-листы модели (общий, тактический, отдела продаж), транскрипт встречи и шаблон.
+Изучи ВСЁ. Затем веди меня строго по 8 шагам построения предиктивной модели.
+Собери модель моего отдела как блок общей кросс-командной модели компании:
+2–3 царь-метрики отдела + воронка (опережающие) + 3–5 драйверов, на месяц по неделям,
+на моих РЕАЛЬНЫХ цифрах (точка А = W0). Наверх выведи запаздывающие метрики компании
+(выручка / маржа / чистая прибыль). Заложи формулы так, чтобы при смене любого допущения
+пересчитывались выручка и каскад. На каждом шаге задавай вопросы. Проставь план/факт
+и светофор (🟩 ≥100% · 🟨 90–99% · 🟥 &lt;90%).</pre>
+      <div class="pc">
+        <div class="col pros"><h4>Плюсы</h4><ul>
+          <li><b>Проектирует допущения вживую:</b> подставляешь значение — модель сразу пересчитывается.</li>
+          <li>Меньше ошибается и качественнее собирает цифры (работает в структуре таблицы).</li>
+          <li>Диалог с моделью в реальном времени — докалибровываешь на ходу.</li>
+          <li>На выходе — сразу готовая рабочая таблица с формулами.</li>
+        </ul></div>
+        <div class="col cons"><h4>Минусы</h4><ul>
+          <li>Нужен доступ Claude к таблице (расширение в браузере / Claude для Excel).</li>
+          <li>Работа в одной таблице — подкладывать много доп. артефактов менее удобно, чем в проект/папку.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- ПАНЕЛЬ 2 -->
+    <div class="mpanel" id="p2" role="tabpanel">
+      <div class="mp-head"><h3>Способ 2 · В Claude (браузер) — проект</h3><span class="mp-when">быстрый старт, ничего не ставить</span></div>
+      <p class="mp-desc">Создаёте в Claude «проект»-контейнер, складываете туда всю информацию по компании и отделу (файлами или ссылками), и собираете модель в диалоге. Память проекта держит контекст между сессиями.</p>
+      <ol class="steps">
+        <li>Создайте проект: <b>claude.ai → Projects → New project</b>.</li>
+        <li>В знания проекта добавьте: опорные материалы по компании и отделу, цель, последнюю отчётность, чек-листы, транскрипт, шаблон — файлами.</li>
+        <li>Если ключевые данные лежат на <b>Google Диске</b> — оставьте в проекте ссылки на нужные папки/файлы (или подключите коннектор), чтобы Claude читал актуальные версии.</li>
+        <li>Запустите сборку промптом ниже. Собирайте модель в диалоге по 8 шагам.</li>
+        <li>Готовую модель перенесите в Google Sheets по шаблону (структура «метрики × недели»).</li>
+      </ol>
+      <div class="prompt-h">Промпт запуска — копировать целиком</div>
+      <pre class="prompt">Это проект моей компании. В знаниях проекта — материалы о бизнесе и моём отделе,
+цель, отчётность, чек-листы модели, транскрипт встречи и шаблон (плюс ссылки на Google Диск
+с актуальными данными). Изучи ВСЁ. Веди меня строго по 8 шагам построения предиктивной модели.
+Собери модель моего отдела как блок общей кросс-командной модели компании:
+2–3 царь-метрики отдела + воронка + 3–5 драйверов, на месяц по неделям, на моих РЕАЛЬНЫХ
+цифрах (точка А = W0), план/факт и светофор. На каждом шаге задавай вопросы.
+Выведи модель таблицей, готовой к переносу в Google Sheets.</pre>
+      <div class="pc">
+        <div class="col pros"><h4>Плюсы</h4><ul>
+          <li>Быстрый старт — ничего не нужно устанавливать.</li>
+          <li>Память проекта держит весь контекст; удобно возвращаться и докручивать.</li>
+          <li>Легко подкладывать ссылки на Google Диск и новые файлы.</li>
+        </ul></div>
+        <div class="col cons"><h4>Минусы</h4><ul>
+          <li>Не считает так «живо», как в таблице — результат отдаёт текстом/разметкой.</li>
+          <li>Перенос модели в Google Sheets и формулы — руками.</li>
+          <li>Для сложных пересчётов слабее Excel-способа.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- ПАНЕЛЬ 3 -->
+    <div class="mpanel" id="p3" role="tabpanel">
+      <div class="mp-head"><h3>Способ 3 · Вайб-кодинг (VS Code + Claude Code)</h3><span class="mp-when">максимальная гибкость</span></div>
+      <p class="mp-desc">Классический способ модуля: складываете все материалы в папку проекта, открываете её в VS Code, и Claude Code ведёт вас по 8 шагам. Отсюда же можно сразу завайбкодить интерактивный дашборд-модель.</p>
+      <ol class="steps">
+        <li>Откройте <b>папку проекта</b> (со 2-го задания: цели, ниша, отчётность).</li>
+        <li>Скачайте материалы из раздела выше и положите в эту папку (инструкция, чек-листы, транскрипт, шаблоны).</li>
+        <li>Откройте папку в <b>VS Code</b> (File → Open Folder).</li>
+        <li>Запустите ассистента промптом ниже (впишите название компании). Отвечайте честными цифрами по каждой неделе.</li>
+        <li>Применяйте <b>промпты-помощники №2–№5</b> в нужный момент (см. раздел ниже) — не все сразу.</li>
+      </ol>
+      <div class="prompt-h">Промпт запуска — копировать целиком</div>
+      <pre class="prompt">Это папка проекта моей компании «[ВПИШИТЕ НАЗВАНИЕ]». В ней лежат материалы о бизнесе,
+чек-листы, плейбук, транскрипт и шаблоны. Изучи ВСЁ это. Затем веди меня строго по 8 шагам
+из инструкции и транскрипта. На каждом шаге задавай вопросы. Собери модель моего отдела
+как блок кросс-командной модели: 2–3 царь-метрики + воронка + 3–5 драйверов, на месяц
+по неделям, на реальных цифрах, план/факт и светофор.</pre>
+      <div class="pc">
+        <div class="col pros"><h4>Плюсы</h4><ul>
+          <li>Максимальная гибкость и полный контекст всей папки проекта.</li>
+          <li>Можно сразу завайбкодить веб-дашборд/интерактивную модель, а не только таблицу.</li>
+          <li>Хорошо масштабируется на большие проекты с кучей файлов.</li>
+        </ul></div>
+        <div class="col cons"><h4>Минусы</h4><ul>
+          <li>Нужна установка VS Code + Claude Code — порог входа выше.</li>
+          <li>Избыточно, если нужна «просто таблица».</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРОМПТЫ-ПОМОЩНИКИ -->
+  <div class="grp">
+    <h2><span class="ix">⌨</span> Промпты-помощники (для любого способа)</h2>
+    <p class="lead" style="margin-bottom:14px">Применяйте по мере готовности модели — не все сразу.</p>
+    <div class="phelp">
+      <div class="ph"><div class="pn">№2 — Декомпозиция цели → метрики</div><div class="pw">когда: в начале сборки</div>
+        <pre class="prompt">Помоги декомпозировать мою цель на метрики: запаздывающие компании (выручка, маржа,
+чистая прибыль) → опережающие моего отдела (воронка) → драйверы. Предложи 2–3 царь-метрики
+моего отдела, от которых сильнее всего зависит результат.</pre></div>
+      <div class="ph"><div class="pn">№3 — Полнота драйверов</div><div class="pw">когда: драйверы намечены</div>
+        <pre class="prompt">Проверь, все ли рычаги роста задействованы в модели (привлечение, конверсия,
+средний чек, удержание / повторные покупки). Какой рычаг не закрыт ни одним драйвером?
+Предложи, чем его закрыть.</pre></div>
+      <div class="ph"><div class="pn">№4 — Защита модели</div><div class="pw">когда: модель почти готова</div>
+        <pre class="prompt">Будь скептиком: проверь арифметику каскада (лиды × конверсия × чек = плановая выручка).
+Сходится ли сумма драйверов с целью? Есть ли запас +15–20%? Задай 5 неудобных вопросов.</pre></div>
+    </div>
+    <div class="note">🔎 Поиск бутылочного горлышка и дебаг просадок — это <b>отдельный модуль</b>. Сейчас цель — сформулировать и защитить модель, а не искать, где она красная.</div>
+  </div>
+
+  <!-- ВТОРОЙ МОЗГ / GOOGLE API -->
+  <div class="grp">
+    <h2><span class="ix">🧠</span> Подключите модель ко «второму мозгу» (Google API)</h2>
+    <div class="card">
+      <div class="rt">Зачем</div>
+      <p style="margin:0 0 12px;font-size:14.5px;line-height:1.5">Когда модель живёт в Google Sheets, её можно отдать вашему ИИ-контуру («второму мозгу») через <b>Google Sheets API</b>. Тогда ИИ читает контекст таблицы напрямую — и модель перестаёт быть статичной: она сама анализирует и приходит к вам с выводами.</p>
+      <div class="note" style="margin-top:0;margin-bottom:12px">Это <b>опциональный</b> блок, забегающий вперёд: сам дебаг и поиск горлышек разберём в отдельном модуле. Здесь вы просто подключаете инструмент, который потом будет делать это за вас.</div>
+      <ol class="steps">
+        <li>Держите модель в <b>Google Sheets</b> (не в локальном Excel) — чтобы она была доступна по API.</li>
+        <li>Включите доступ: <b>Google Cloud Console</b> → создайте проект → включите <b>Google Sheets API</b> → создайте сервисный аккаунт (или OAuth) → выдайте ему доступ к таблице (share на e-mail сервисного аккаунта).</li>
+        <li>Подключите к «второму мозгу»: через <b>MCP-коннектор Google Sheets</b> в Claude, либо через сценарий n8n/скрипт, который отдаёт содержимое таблицы ИИ.</li>
+        <li>Дайте ИИ постоянную инструкцию (промпт ниже) — и заведите ритуал: раз в неделю он читает модель и присылает разбор.</li>
+      </ol>
+      <div class="prompt-h">Промпт «второму мозгу» — копировать целиком</div>
+      <pre class="prompt">Читай мою предиктивную модель в Google Sheets [ссылка / ID таблицы].
+Раз в неделю делай следующее и присылай сводку в [Telegram / чат]:
+1. Найди бутылочное горлышко по светофору — где план не выполняется и почему.
+2. Разбери красные метрики: топ-3 фактора + конкретные действия на эту неделю.
+3. Поймай АНОМАЛИИ — факты, которые аномально ВЫРОСЛИ, и предложи гипотезы,
+   как это масштабировать (а не только чинить красное).
+4. Дай короткий вывод: что делать на этой неделе, чтобы вытащить метрику.</pre>
+      <div class="result"><b>Результат:</b> модель становится живым пультом — ИИ сам читает контекст таблицы, дебажит просадки, ловит точки роста и ведёт еженедельные ритуалы. Вы не бегаете за цифрами — система приходит к вам с готовыми действиями.</div>
+    </div>
+  </div>
+
+  <!-- ОБЯЗАТЕЛЬНО -->
+  <div class="grp">
+    <h2><span class="ix">✅</span> Обязательно к разбору</h2>
+    <div class="card">
+      <div class="princ">
+        <div>Собрана <b>кросс-командная модель</b>: запаздывающие метрики компании + блоки отделов.</div>
+        <div>По каждому отделу — <b>2–3 царь-метрики</b> + воронка + <b>3–5 драйверов</b>, план/факт по неделям, светофор.</div>
+        <div><b>Каскад сходится:</b> лиды × конверсия × чек = плановая выручка; сумма драйверов = цель.</div>
+        <div>Назначен <b>ОДИН владелец</b> сборки модели + по одному ответственному на каждую метрику.</div>
+      </div>
+      <div class="miniwarn"><b>На разбор приходим с собранной моделью.</b> Первая версия может быть сырой — это нормально, но прогоните алгоритм от и до и провалидируйте. С сырой выдачей нейросети «за 2 минуты» разбор не проводим.</div>
+    </div>
+    <a class="cta" href="https://calendly.com/zhivotov-alexander/a-players" target="_blank" rel="noopener">
+      <b>📅 Записаться на персональный разбор</b>
+      <span>Приносите собранную модель. С пустыми руками разбор не проводим.</span>
+    </a>
+  </div>
+
+  <div class="foot">
+    A-Players · Практикум · домашнее задание «Предиктивная модель». Материалы — только для участников практикума, не для публикации.
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.mtab'));
+  function sel(id){
+    tabs.forEach(function(t){
+      var on=t.getAttribute('data-p')===id;
+      t.setAttribute('aria-selected',on?'true':'false');
+    });
+    ['p1','p2','p3'].forEach(function(pid){
+      var p=document.getElementById(pid);
+      if(p) p.classList.toggle('on',pid===id);
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){ sel(t.getAttribute('data-p')); });
+  });
+})();
+</script>
+<script>(function(){var L="a-players",P="Pred-Model-2026",K="apl_pm_ok";var g=document.getElementById("aplgate"),c=document.getElementById("content");function rd(k){try{return sessionStorage.getItem(k)}catch(e){return null}}function st(k,v){try{sessionStorage.setItem(k,v)}catch(e){}}function un(){g.style.display="none";if(c)c.style.display="";}if(rd(K)==="1")un();function ty(){var l=(document.getElementById("agl").value||"").trim().toLowerCase(),p=(document.getElementById("agp").value||"").trim();if(l===L&&p===P){st(K,"1");un();}else{document.getElementById("age").style.display="block";}}document.getElementById("agb").addEventListener("click",ty);["agl","agp"].forEach(function(id){document.getElementById(id).addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();ty();}})});try{document.getElementById("agl").focus()}catch(e){}})();</script>
+</body>
+</html>
