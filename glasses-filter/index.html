@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Янтарные очки · Фотофильтр</title>
+<style>
+  :root{
+    --bg:#171008;
+    --bg2:#20160c;
+    --panel:#2a1c0f;
+    --panel2:#33230f;
+    --line:#4a3417;
+    --amber:#e8a24c;
+    --amber-soft:#f0c07a;
+    --cream:#f5ead6;
+    --muted:#b79a72;
+    --muted2:#8a7350;
+    --shadow:0 18px 50px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #3a2611 0%, transparent 60%),
+      radial-gradient(800px 500px at 90% 110%, #2a1a09 0%, transparent 55%),
+      var(--bg);
+    color:var(--cream);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:42px 20px 80px}
+
+  header{text-align:center;margin-bottom:26px}
+  .kicker{
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--amber);font-weight:600;margin-bottom:12px
+  }
+  h1{
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:600;font-size:38px;line-height:1.05;margin:0 0 10px;
+    color:var(--cream);text-wrap:balance;
+  }
+  h1 em{font-style:italic;color:var(--amber-soft)}
+  .sub{color:var(--muted);font-size:15px;max-width:520px;margin:0 auto;line-height:1.5}
+
+  .card{
+    background:linear-gradient(180deg,var(--panel) 0%,var(--bg2) 100%);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:22px;
+    margin-top:26px;
+  }
+
+  /* Drop zone */
+  .drop{
+    border:2px dashed #6a4a1f;
+    border-radius:16px;
+    background:rgba(232,162,76,.04);
+    padding:54px 24px;
+    text-align:center;
+    cursor:pointer;
+    transition:.18s;
+  }
+  .drop:hover,.drop.over{border-color:var(--amber);background:rgba(232,162,76,.1)}
+  .drop .icon{font-size:40px;margin-bottom:10px;filter:saturate(1.1)}
+  .drop b{color:var(--cream);font-size:17px}
+  .drop small{display:block;color:var(--muted2);margin-top:8px;font-size:13px}
+
+  /* Stage */
+  .stage{display:none}
+  .stage.on{display:block}
+  .compare{
+    position:relative;width:100%;border-radius:14px;overflow:hidden;
+    background:#0d0a05;user-select:none;touch-action:none;
+    border:1px solid var(--line);
+  }
+  .compare canvas{display:block;width:100%;height:auto}
+  .compare .after{position:absolute;inset:0;overflow:hidden;width:50%;border-right:2px solid var(--amber)}
+  .compare .after canvas{width:auto;max-width:none;height:100%}
+  .handle{
+    position:absolute;top:0;bottom:0;left:50%;width:40px;margin-left:-20px;
+    cursor:ew-resize;display:flex;align-items:center;justify-content:center;
+  }
+  .handle .grip{
+    width:38px;height:38px;border-radius:50%;background:var(--amber);
+    box-shadow:0 4px 14px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;
+    color:#2a1c0f;font-size:16px;font-weight:800;
+  }
+  .tag{
+    position:absolute;top:12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(0,0,0,.55);color:var(--cream);
+    backdrop-filter:blur(4px);pointer-events:none;
+  }
+  .tag.l{left:12px}
+  .tag.r{right:12px;background:rgba(232,162,76,.85);color:#2a1c0f}
+
+  /* Controls */
+  .controls{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px 26px}
+  @media(max-width:560px){.controls{grid-template-columns:1fr}}
+  .ctrl label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:500}
+  .ctrl label .v{color:var(--amber-soft);font-variant-numeric:tabular-nums;font-weight:700}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:6px;
+    background:linear-gradient(90deg,var(--amber) 0%,var(--amber) var(--p,50%),#3d2c14 var(--p,50%));
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:var(--cream);
+    border:3px solid var(--amber);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.4)
+  }
+  input[type=range]::-moz-range-thumb{
+    width:16px;height:16px;border-radius:50%;background:var(--cream);
+    border:3px solid var(--amber);cursor:pointer
+  }
+
+  .presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .preset{
+    border:1px solid var(--line);background:var(--panel2);color:var(--cream);
+    padding:8px 15px;border-radius:22px;font-size:13px;cursor:pointer;transition:.15s;font-weight:600
+  }
+  .preset:hover{border-color:var(--amber)}
+  .preset.active{background:var(--amber);color:#2a1c0f;border-color:var(--amber)}
+
+  .toggles{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px}
+  .tog{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:14px;color:var(--muted);font-weight:500}
+  .tog input{width:17px;height:17px;accent-color:var(--amber);cursor:pointer}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{
+    border:none;border-radius:12px;padding:14px 22px;font-size:15px;font-weight:700;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;transition:.15s
+  }
+  .btn.primary{background:var(--amber);color:#241706;flex:1;justify-content:center;min-width:190px}
+  .btn.primary:hover{background:var(--amber-soft)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--cream)}
+  .btn.ghost:hover{border-color:var(--amber)}
+
+  footer{text-align:center;color:var(--muted2);font-size:13px;margin-top:34px;line-height:1.6}
+  .hint{color:var(--muted2);font-size:12.5px;text-align:center;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Фотофильтр</div>
+    <h1>Янтарные <em>очки</em></h1>
+    <p class="sub">Загрузи любое фото — и оно превратится в тёплый, золотистый кадр,
+    как будто снят на плёнку из детства. Тот самый эффект твоих очков.</p>
+  </header>
+
+  <div class="card">
+    <!-- Upload -->
+    <div class="drop" id="drop">
+      <div class="icon">🕶️</div>
+      <b>Перетащи фото сюда или нажми, чтобы выбрать</b>
+      <small>JPG, PNG, HEIC — обрабатывается прямо в браузере, ничего не загружается на сервер</small>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+
+    <!-- Stage -->
+    <div class="stage" id="stage">
+      <div class="compare" id="compare">
+        <canvas id="base"></canvas>
+        <div class="after" id="afterWrap"><canvas id="afterC"></canvas></div>
+        <span class="tag l">Оригинал</span>
+        <span class="tag r">С очками</span>
+        <div class="handle" id="handle"><div class="grip">⟺</div></div>
+      </div>
+      <p class="hint">Тяни ползунок по центру, чтобы сравнить «до» и «после»</p>
+
+      <div class="presets" id="presets">
+        <button class="preset active" data-preset="classic">Классика</button>
+        <button class="preset" data-preset="golden">Золотой час</button>
+        <button class="preset" data-preset="faded">Выцветшее</button>
+        <button class="preset" data-preset="strong">Насыщенно</button>
+      </div>
+
+      <div class="controls">
+        <div class="ctrl">
+          <label>Сила эффекта <span class="v" id="v-strength">70%</span></label>
+          <input type="range" id="strength" min="0" max="100" value="70">
+        </div>
+        <div class="ctrl">
+          <label>Теплота <span class="v" id="v-warmth">100%</span></label>
+          <input type="range" id="warmth" min="0" max="150" value="100">
+        </div>
+        <div class="ctrl">
+          <label>Дымка / выцветание <span class="v" id="v-lift">55%</span></label>
+          <input type="range" id="lift" min="0" max="100" value="55">
+        </div>
+        <div class="ctrl">
+          <label>Свечение <span class="v" id="v-glow">40%</span></label>
+          <input type="range" id="glow" min="0" max="100" value="40">
+        </div>
+      </div>
+
+      <div class="toggles">
+        <label class="tog"><input type="checkbox" id="vignette" checked> Виньетка</label>
+        <label class="tog"><input type="checkbox" id="grain" checked> Зерно плёнки</label>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="download">⬇ Скачать результат</button>
+        <button class="btn ghost" id="reset">Другое фото</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Всё считается локально в твоём браузере — фотографии никуда не отправляются.<br>
+    Сделано для A-Players.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const drop=$('drop'), file=$('file'), stage=$('stage');
+  const base=$('base'), afterC=$('afterC');
+  const bctx=base.getContext('2d'), actx=afterC.getContext('2d');
+  const compare=$('compare'), afterWrap=$('afterWrap'), handle=$('handle');
+
+  let srcImg=null;          // original ImageData buffer canvas
+  let srcCanvas=document.createElement('canvas');
+  let sctx=srcCanvas.getContext('2d',{willReadFrequently:true});
+  let noise=null;           // cached noise for current dims
+
+  const params={strength:0.70,warmth:1.0,lift:0.55,glow:0.40,vignette:true,grain:true};
+
+  const presets={
+    classic:{strength:0.70,warmth:1.0,lift:0.55,glow:0.40,vignette:true,grain:true},
+    golden :{strength:0.85,warmth:1.25,lift:0.45,glow:0.65,vignette:true,grain:true},
+    faded  :{strength:0.60,warmth:0.9,lift:0.85,glow:0.30,vignette:false,grain:true},
+    strong :{strength:1.0,warmth:1.15,lift:0.40,glow:0.55,vignette:true,grain:false}
+  };
+
+  /* ---------- The amber-glasses filter ---------- */
+  function clamp(x){return x<0?0:x>255?255:x;}
+
+  function processTo(ctx, W, H){
+    const img = sctx.getImageData(0,0,W,H);
+    const d = img.data;
+    const s = params.strength;
+    const warm = params.warmth;
+    const lift = params.lift * s;
+    const cx=W/2, cy=H/2, maxR=Math.sqrt(cx*cx+cy*cy);
+
+    // warm lift offsets
+    const liftR = 26*lift, liftG = 20*lift, liftB = 11*lift;
+    // contrast reduction (haze)
+    const con = 1 - 0.16*lift;
+    // sepia mix amount
+    const mix = 0.55*s;
+    // warm channel gains
+    const gR = 1 + 0.14*s*warm;
+    const gB = 1 - 0.30*s*warm;
+    const gG = 1 - 0.02*s;
+    // amber glow color in highlights
+    const glow = params.glow*s;
+
+    for(let y=0, i=0; y<H; y++){
+      for(let x=0; x<W; x++, i+=4){
+        let r=d[i], g=d[i+1], b=d[i+2];
+
+        // 1. sepia-warm base blended with original
+        const sr = 0.393*r + 0.769*g + 0.189*b;
+        const sg = 0.349*r + 0.686*g + 0.168*b;
+        const sb = 0.272*r + 0.534*g + 0.131*b;
+        r = r*(1-mix) + sr*mix;
+        g = g*(1-mix) + sg*mix;
+        b = b*(1-mix) + sb*mix;
+
+        // 2. warm white-balance shift
+        r *= gR; g *= gG; b *= gB;
+
+        // 3. lift blacks warm + reduce contrast (dreamy haze)
+        r = (r-128)*con + 128 + liftR;
+        g = (g-128)*con + 128 + liftG;
+        b = (b-128)*con + 128 + liftB;
+
+        // 4. amber glow in highlights (screen-blend toward amber)
+        if(glow>0){
+          const lum=(r*0.299+g*0.587+b*0.114)/255;
+          const hl=lum*lum*glow;         // stronger in bright areas
+          r = r + (255-r)*hl*0.55;
+          g = g + (215-g)*hl*0.42;
+          b = b + (140-b)*hl*0.18;
+        }
+
+        // 5. vignette (warm darkening at edges)
+        if(params.vignette){
+          const dx=x-cx, dy=y-cy;
+          const dist=Math.sqrt(dx*dx+dy*dy)/maxR;
+          const v=1 - Math.pow(dist,2.2)*0.42*(0.5+0.5*s);
+          r*=v; g*=v; b*=v;
+        }
+
+        // 6. film grain
+        if(params.grain && noise){
+          const n=noise[(y*W+x)];
+          r+=n; g+=n; b+=n;
+        }
+
+        d[i]=clamp(r); d[i+1]=clamp(g); d[i+2]=clamp(b);
+      }
+    }
+    ctx.putImageData(img,0,0);
+  }
+
+  function buildNoise(W,H){
+    if(!params.grain){noise=null;return;}
+    const arr=new Float32Array(W*H);
+    // simple value noise; deterministic-ish
+    for(let i=0;i<arr.length;i++){
+      arr[i]=(Math.random()-0.5)*14;
+    }
+    noise=arr;
+  }
+
+  function render(){
+    if(!srcImg) return;
+    const W=srcCanvas.width, H=srcCanvas.height;
+    if(!noise || noise.length!==W*H) buildNoise(W,H);
+    else if(!params.grain) noise=null;
+    processTo(actx,W,H);
+  }
+
+  /* ---------- Load image ---------- */
+  function loadFile(f){
+    if(!f || !f.type.startsWith('image/')) { alert('Пожалуйста, выбери изображение.'); return; }
+    const url=URL.createObjectURL(f);
+    const im=new Image();
+    im.onload=()=>{
+      URL.revokeObjectURL(url);
+      // cap size for performance while keeping quality
+      const MAX=1800;
+      let W=im.naturalWidth, H=im.naturalHeight;
+      const scale=Math.min(1, MAX/Math.max(W,H));
+      W=Math.round(W*scale); H=Math.round(H*scale);
+
+      srcCanvas.width=W; srcCanvas.height=H;
+      sctx.drawImage(im,0,0,W,H);
+
+      base.width=W; base.height=H;
+      afterC.width=W; afterC.height=H;
+      bctx.drawImage(srcCanvas,0,0);
+
+      srcImg=true;
+      buildNoise(W,H);
+      render();
+
+      drop.style.display='none';
+      stage.classList.add('on');
+      setSplit(0.5);
+    };
+    im.onerror=()=>alert('Не удалось открыть это изображение. Попробуй JPG или PNG.');
+    im.src=url;
+  }
+
+  /* ---------- Compare slider ---------- */
+  function setSplit(t){
+    t=Math.max(0,Math.min(1,t));
+    afterWrap.style.width=(t*100)+'%';
+    handle.style.left=(t*100)+'%';
+  }
+  let dragging=false;
+  function pointerX(e){
+    const rect=compare.getBoundingClientRect();
+    const cx=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+    return cx/rect.width;
+  }
+  handle.addEventListener('pointerdown',e=>{dragging=true;handle.setPointerCapture(e.pointerId);});
+  compare.addEventListener('pointerdown',e=>{if(e.target.closest('.handle'))return;dragging=true;setSplit(pointerX(e));});
+  window.addEventListener('pointermove',e=>{if(dragging)setSplit(pointerX(e));});
+  window.addEventListener('pointerup',()=>dragging=false);
+
+  /* ---------- Controls ---------- */
+  function fmtPct(x){return Math.round(x*100)+'%';}
+  function bindRange(id,key,scale,fmt){
+    const el=$(id), out=$('v-'+id);
+    const upd=()=>{
+      const raw=+el.value;
+      params[key]=raw/scale;
+      out.textContent=fmt?fmt(raw):raw+'%';
+      el.style.setProperty('--p',(raw/(+el.max))*100+'%');
+      render();
+    };
+    el.addEventListener('input',upd);
+    el._sync=()=>{el.value=Math.round(params[key]*scale);el.style.setProperty('--p',(el.value/(+el.max))*100+'%');out.textContent=fmt?fmt(el.value):el.value+'%';};
+    el._sync();
+  }
+  bindRange('strength','strength',100);
+  bindRange('warmth','warmth',100);
+  bindRange('lift','lift',100);
+  bindRange('glow','glow',100);
+
+  $('vignette').addEventListener('change',e=>{params.vignette=e.target.checked;render();});
+  $('grain').addEventListener('change',e=>{params.grain=e.target.checked;buildNoise(srcCanvas.width,srcCanvas.height);render();});
+
+  // presets
+  document.querySelectorAll('.preset').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const p=presets[btn.dataset.preset];
+      Object.assign(params,p);
+      ['strength','warmth','lift','glow'].forEach(id=>$(id)._sync());
+      $('vignette').checked=params.vignette;
+      $('grain').checked=params.grain;
+      buildNoise(srcCanvas.width,srcCanvas.height);
+      render();
+    });
+  });
+
+  /* ---------- Upload wiring ---------- */
+  drop.addEventListener('click',()=>file.click());
+  file.addEventListener('change',e=>{if(e.target.files[0])loadFile(e.target.files[0]);});
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
+  drop.addEventListener('drop',e=>{if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);});
+  // paste support
+  window.addEventListener('paste',e=>{
+    const it=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/'));
+    if(it)loadFile(it.getAsFile());
+  });
+
+  /* ---------- Download ---------- */
+  $('download').addEventListener('click',()=>{
+    // render at full processed resolution (already at capped size)
+    afterC.toBlob(b=>{
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(b);
+      a.download='amber-glasses.jpg';
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    },'image/jpeg',0.92);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    stage.classList.remove('on');
+    drop.style.display='block';
+    file.value='';
+    srcImg=null;
+  });
+})();
+</script>
+</body>
+</html>
